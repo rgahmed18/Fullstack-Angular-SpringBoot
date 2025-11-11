@@ -1,0 +1,274 @@
+<div class="profile-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Chargement du profil...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-icon class="error-icon">error</mat-icon>
+    <h3>Erreur</h3>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadProfile()">
+      <mat-icon>refresh</mat-icon>
+      Réessayer
+    </button>
+  </div>
+
+  <!-- Profile Content -->
+  <div *ngIf="!loading && !error" class="profile-content">
+    
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <mat-card class="header-card">
+        <div class="profile-banner">
+          <div class="profile-avatar">
+            <mat-icon class="avatar-icon">account_circle</mat-icon>
+          </div>
+          <div class="profile-info">
+            <h1 class="profile-name">{{ chauffeurProfile?.nom }} {{ chauffeurProfile?.prenom }}</h1>
+            <p class="profile-role">Chauffeur CDG</p>
+            <div class="profile-status">
+              <mat-chip [color]="getStatusColor()" selected>
+                <mat-icon>{{ chauffeurProfile?.actif ? 'check_circle' : 'cancel' }}</mat-icon>
+                {{ getStatusText() }}
+              </mat-chip>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="stats-grid">
+      <mat-card class="stat-card missions">
+        <div class="stat-content">
+          <mat-icon class="stat-icon">assignment</mat-icon>
+          <div class="stat-details">
+            <h3>{{ stats.totalMissions }}</h3>
+            <p>Missions totales</p>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card completed">
+        <div class="stat-content">
+          <mat-icon class="stat-icon">check_circle</mat-icon>
+          <div class="stat-details">
+            <h3>{{ stats.completedMissions }}</h3>
+            <p>Missions terminées</p>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card success-rate">
+        <div class="stat-content">
+          <mat-icon class="stat-icon">trending_up</mat-icon>
+          <div class="stat-details">
+            <h3>{{ stats.successRate }}%</h3>
+            <p>Taux de réussite</p>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card distance">
+        <div class="stat-content">
+          <mat-icon class="stat-icon">route</mat-icon>
+          <div class="stat-details">
+            <h3>{{ stats.totalKm }}</h3>
+            <p>Kilomètres parcourus</p>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Profile Tabs -->
+    <mat-card class="profile-tabs-card">
+      <mat-tab-group class="profile-tabs" animationDuration="300ms">
+        
+        <!-- Personal Information Tab -->
+        <mat-tab label="Informations personnelles">
+          <div class="tab-content">
+            <div class="section-header">
+              <h2>Informations personnelles</h2>
+              <p>Gérez vos informations de profil</p>
+            </div>
+
+            <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="profile-form">
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="half-width">
+                  <mat-label>Nom</mat-label>
+                  <input matInput formControlName="nom" placeholder="Votre nom">
+                  <mat-icon matSuffix>person</mat-icon>
+                  <mat-error *ngIf="profileForm.get('nom')?.hasError('required')">
+                    Le nom est obligatoire
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="half-width">
+                  <mat-label>Prénom</mat-label>
+                  <input matInput formControlName="prenom" placeholder="Votre prénom">
+                  <mat-icon matSuffix>person</mat-icon>
+                  <mat-error *ngIf="profileForm.get('prenom')?.hasError('required')">
+                    Le prénom est obligatoire
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="half-width">
+                  <mat-label>Téléphone</mat-label>
+                  <input matInput formControlName="telephone" placeholder="+212 6XX XXX XXX">
+                  <mat-icon matSuffix>phone</mat-icon>
+                  <mat-error *ngIf="profileForm.get('telephone')?.hasError('required')">
+                    Le téléphone est obligatoire
+                  </mat-error>
+                  <mat-error *ngIf="profileForm.get('telephone')?.hasError('pattern')">
+                    Format de téléphone invalide
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="half-width">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email" placeholder="votre@email.com">
+                  <mat-icon matSuffix>email</mat-icon>
+                  <mat-error *ngIf="profileForm.get('email')?.hasError('required')">
+                    L'email est obligatoire
+                  </mat-error>
+                  <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+                    Format d'email invalide
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-actions">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!profileForm.valid || updating">
+                  <mat-spinner *ngIf="updating" diameter="20"></mat-spinner>
+                  <mat-icon *ngIf="!updating">save</mat-icon>
+                  {{ updating ? 'Mise à jour...' : 'Mettre à jour' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+
+        <!-- Professional Information Tab -->
+        <mat-tab label="Informations professionnelles">
+          <div class="tab-content">
+            <div class="section-header">
+              <h2>Informations professionnelles</h2>
+              <p>Détails de votre emploi chez CDG</p>
+            </div>
+
+            <div class="info-grid">
+              <div class="info-item">
+                <mat-icon class="info-icon">work</mat-icon>
+                <div class="info-content">
+                  <h4>Poste</h4>
+                  <p>Chauffeur</p>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <mat-icon class="info-icon">calendar_today</mat-icon>
+                <div class="info-content">
+                  <h4>Date d'embauche</h4>
+                  <p>{{ formatDate(chauffeurProfile?.dateEmbauche) }}</p>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <mat-icon class="info-icon">directions_car</mat-icon>
+                <div class="info-content">
+                  <h4>Véhicule assigné</h4>
+                  <p *ngIf="chauffeurProfile?.vehicule">
+                    {{ chauffeurProfile.vehicule.marque }} {{ chauffeurProfile.vehicule.modele }}
+                    <br><small>{{ chauffeurProfile.vehicule.immatriculation }}</small>
+                  </p>
+                  <p *ngIf="!chauffeurProfile?.vehicule">Aucun véhicule assigné</p>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <mat-icon class="info-icon">badge</mat-icon>
+                <div class="info-content">
+                  <h4>ID Chauffeur</h4>
+                  <p>#{{ chauffeurProfile?.id }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Security Tab -->
+        <mat-tab label="Sécurité">
+          <div class="tab-content">
+            <div class="section-header">
+              <h2>Sécurité du compte</h2>
+              <p>Modifiez votre mot de passe</p>
+            </div>
+
+            <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()" class="password-form">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Mot de passe actuel</mat-label>
+                <input matInput type="password" formControlName="currentPassword" placeholder="Votre mot de passe actuel">
+                <mat-icon matSuffix>lock</mat-icon>
+                <mat-error *ngIf="passwordForm.get('currentPassword')?.hasError('required')">
+                  Le mot de passe actuel est obligatoire
+                </mat-error>
+              </mat-form-field>
+
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="half-width">
+                  <mat-label>Nouveau mot de passe</mat-label>
+                  <input matInput type="password" formControlName="newPassword" placeholder="Nouveau mot de passe">
+                  <mat-icon matSuffix>lock_outline</mat-icon>
+                  <mat-error *ngIf="passwordForm.get('newPassword')?.hasError('required')">
+                    Le nouveau mot de passe est obligatoire
+                  </mat-error>
+                  <mat-error *ngIf="passwordForm.get('newPassword')?.hasError('minlength')">
+                    Le mot de passe doit contenir au moins 6 caractères
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="half-width">
+                  <mat-label>Confirmer le mot de passe</mat-label>
+                  <input matInput type="password" formControlName="confirmPassword" placeholder="Confirmez le mot de passe">
+                  <mat-icon matSuffix>lock_outline</mat-icon>
+                  <mat-error *ngIf="passwordForm.get('confirmPassword')?.hasError('required')">
+                    La confirmation est obligatoire
+                  </mat-error>
+                  <mat-error *ngIf="passwordForm.get('confirmPassword')?.hasError('passwordMismatch')">
+                    Les mots de passe ne correspondent pas
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-actions">
+                <button mat-raised-button color="accent" type="submit" [disabled]="!passwordForm.valid || updating">
+                  <mat-spinner *ngIf="updating" diameter="20"></mat-spinner>
+                  <mat-icon *ngIf="!updating">security</mat-icon>
+                  {{ updating ? 'Mise à jour...' : 'Changer le mot de passe' }}
+                </button>
+              </div>
+            </form>
+
+            <mat-divider class="security-divider"></mat-divider>
+
+            <div class="security-tips">
+              <h3>Conseils de sécurité</h3>
+              <ul>
+                <li>Utilisez un mot de passe fort avec au moins 8 caractères</li>
+                <li>Incluez des lettres majuscules, minuscules, des chiffres et des symboles</li>
+                <li>Ne partagez jamais votre mot de passe</li>
+                <li>Changez votre mot de passe régulièrement</li>
+              </ul>
+            </div>
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>

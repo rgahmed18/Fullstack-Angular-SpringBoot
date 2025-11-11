@@ -1,0 +1,80 @@
+<!-- Dashboard with Stats and Greeting -->
+<div class="dashboard-wrapper">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Chargement des données...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <h3>Erreur de chargement</h3>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadDashboardData()">
+      <mat-icon>refresh</mat-icon>
+      Réessayer
+    </button>
+  </div>
+
+  
+  <!-- Dashboard Content -->
+  <div *ngIf="!loading && !error">
+    <!-- Greeting Section -->
+      <div class="welcome-section">
+        <div class="welcome-content">
+          <h1 class="welcome-title">{{ getGreeting() }} 👋</h1>
+          <p class="welcome-subtitle">{{ getGreetingMessage() }}</p>
+        </div>
+        <div class="date-info">
+          <div class="current-date">
+            <mat-icon>today</mat-icon>
+            <span>{{ getCurrentDate() }}</span>
+          </div>
+        </div>
+      </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card missions-today">
+        <div class="stat-icon">
+          <mat-icon>today</mat-icon>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ getTodayMissions().length }}</h3>
+          <p class="stat-label">Missions Aujourd'hui</p>
+        </div>
+      </div>
+
+      <div class="stat-card active-missions">
+        <div class="stat-icon">
+          <mat-icon>play_circle</mat-icon>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ stats.activeMissions }}</h3>
+          <p class="stat-label">Missions Actives</p>
+        </div>
+      </div>
+
+      <div class="stat-card completed-missions">
+        <div class="stat-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ stats.completedMissions }}</h3>
+          <p class="stat-label">Missions Terminées</p>
+        </div>
+      </div>
+
+      <div class="stat-card success-rate">
+        <div class="stat-icon">
+          <mat-icon>trending_up</mat-icon>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ stats.successRate }}%</h3>
+          <p class="stat-label">Taux de Réussite</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

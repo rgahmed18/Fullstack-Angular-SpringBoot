@@ -1,0 +1,439 @@
+.employees-container {
+  padding: 2rem;
+  background: #f8fafc;
+  min-height: 100vh;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #212124 0%, #57751e 100%);
+    border-radius: 16px;
+    color: white;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .back-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+      }
+
+      .header-text {
+        h1 {
+          margin: 0;
+          font-size: 2rem;
+          font-weight: 600;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+          margin: 0.5rem 0 0;
+          opacity: 0.9;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .header-right {
+      .add-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+
+        mat-icon {
+          margin-right: 0.5rem;
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+  }
+
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    text-align: center;
+
+    mat-spinner {
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #64748b;
+      font-size: 1.1rem;
+    }
+  }
+
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    text-align: center;
+
+    .error-icon {
+      font-size: 4rem;
+      width: 4rem;
+      height: 4rem;
+      color: #ef4444;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #64748b;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    text-align: center;
+
+    .empty-icon {
+      font-size: 5rem;
+      width: 5rem;
+      height: 5rem;
+      color: #94a3b8;
+      margin-bottom: 1.5rem;
+    }
+
+    h3 {
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #64748b;
+      margin-bottom: 2rem;
+      max-width: 400px;
+    }
+  }
+
+  .employees-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .employee-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    mat-card-header {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      padding: 1.5rem;
+      position: relative;
+
+      .employee-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #212124 0%, #57751e 100%);
+
+        mat-icon {
+          color: white;
+          font-size: 2rem;
+          width: 2rem;
+          height: 2rem;
+
+          &.primary {
+            color: #15382c;
+          }
+
+          &.accent {
+            color: #15382c;
+          }
+
+          &.warn {
+            color: #15382c;
+          }
+        }
+      }
+
+      .mat-mdc-card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 0.25rem;
+      }
+
+      .mat-mdc-card-subtitle {
+        color: #64748b;
+        font-size: 0.95rem;
+      }
+
+      .status-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+
+        mat-chip {
+          border-radius: 20px;
+          font-weight: 500;
+
+          mat-icon {
+            font-size: 1rem;
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.25rem;
+          }
+        }
+      }
+    }
+
+    mat-card-content {
+      padding: 1.5rem;
+
+      .employee-info {
+        margin-bottom: 1.5rem;
+
+        .info-item {
+          display: flex;
+          align-items: center;
+          margin-bottom: 0.75rem;
+          color: #64748b;
+
+          .info-icon {
+            font-size: 1.2rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-right: 0.75rem;
+            color: #94a3b8;
+          }
+
+          span {
+            font-size: 0.95rem;
+          }
+        }
+      }
+
+      .mission-stats {
+        margin-bottom: 1.5rem;
+
+        h4 {
+          margin: 0 0 1rem;
+          color: #1e293b;
+          font-size: 1rem;
+          font-weight: 600;
+        }
+
+        .stats-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1rem;
+
+          .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+
+            &.active {
+              border-color: #3b82f6;
+              background: rgba(59, 130, 246, 0.05);
+            }
+
+            &.completed {
+              border-color: #10b981;
+              background: rgba(16, 185, 129, 0.05);
+            }
+
+            .stat-number {
+              font-size: 1.5rem;
+              font-weight: 700;
+              color: #1e293b;
+              margin-bottom: 0.25rem;
+            }
+
+            .stat-label {
+              font-size: 0.8rem;
+              color: #64748b;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            }
+          }
+        }
+      }
+
+      .recent-missions {
+        h4 {
+          margin: 0 0 1rem;
+          color: #1e293b;
+          font-size: 1rem;
+          font-weight: 600;
+        }
+
+        .mission-list {
+          margin-bottom: 1rem;
+
+          .mission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border: 1px solid #e2e8f0;
+
+            .mission-info {
+              display: flex;
+              flex-direction: column;
+              gap: 0.25rem;
+
+              .mission-id {
+                font-weight: 600;
+                color: #57751e;
+                font-size: 0.85rem;
+              }
+
+              .mission-route {
+                font-size: 0.9rem;
+                color: #64748b;
+              }
+            }
+
+            .mission-status {
+              font-size: 0.75rem;
+              font-weight: 500;
+            }
+          }
+        }
+
+        .view-all-btn {
+          width: 100%;
+          border: 1px dashed #cbd5e1;
+          border-radius: 8px;
+          color:  #57751e;
+          font-weight: 500;
+        }
+      }
+    }
+
+    mat-card-actions {
+      padding: 1rem 1.5rem;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      gap: 0.5rem;
+
+      button {
+        flex: 1;
+        border-radius: 8px;
+        font-weight: 500;
+        position: relative;
+
+        mat-icon {
+          margin-right: 0.5rem;
+          font-size: 1.1rem;
+          width: 1.1rem;
+          height: 1.1rem;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .employees-container {
+    padding: 1rem;
+
+    .header {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+
+      .header-left {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+
+    .employees-grid {
+      .employee-card {
+        mat-card-header {
+          .status-badge {
+            position: static;
+            margin-top: 1rem;
+          }
+        }
+
+        mat-card-content {
+          .mission-stats {
+            .stats-grid {
+              grid-template-columns: 1fr;
+              gap: 0.75rem;
+            }
+          }
+        }
+
+        mat-card-actions {
+          flex-direction: column;
+          gap: 0.75rem;
+
+          button {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

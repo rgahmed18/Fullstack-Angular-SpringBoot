@@ -1,0 +1,199 @@
+.landing-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4f4f4f 0%, #6b6b6b 100%); // grey gradient
+  display: flex;
+  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
+}
+
+.header {
+  padding: 1.5rem 2rem;
+  background: #354e07; // olive green
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center; // centers the title
+  position: relative; // so logo can be positioned absolutely
+  text-align: center;
+
+  .logo-container {
+    position: absolute;
+    left: 2rem; // keep logo fixed on the left
+    top: 50%;
+    transform: translateY(-50%);
+
+    .cdg-logo {
+      width: 120px; // bigger logo
+      height: auto;
+      object-fit: contain;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      background: white;
+      padding: 0.4rem;
+    }
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    h1 {  
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .company-name {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #dfe8d4;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+
+.main-content {
+  flex: 1;
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+
+  .access-section {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    .access-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      margin: 0 0 1rem 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .access-subtitle {
+      font-size: 1.2rem;
+      color: #f0f0f0;
+      margin: 0;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      font-weight: 300;
+    }
+  }
+
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    justify-items: center;
+  }
+
+  .role-card {
+    width: 100%;
+    max-width: 350px;
+    background: linear-gradient(135deg, #5f815f 0%, #628B18 100%); // updated green
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid rgba(98, 139, 24, 0.3);
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      border-color: rgba(98, 139, 24, 0.6);
+      background: linear-gradient(135deg, #4f7314 0%, #628B18 100%);
+    }
+
+    .card-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #4f7314;
+
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+        color: white;
+      }
+    }
+
+    mat-card-header {
+      padding-bottom: 1rem;
+
+      mat-card-title {
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #f3f8f0;
+      }
+
+      mat-card-subtitle {
+        font-size: 0.95rem;
+        color: #d7e5d0;
+      }
+    }
+
+    mat-card-content {
+      padding-top: 0;
+
+      .features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          padding: 0.4rem 0;
+          font-size: 0.9rem;
+          color: #e0f0dc;
+          line-height: 1.4;
+        }
+      }
+    }
+
+    mat-card-actions {
+      padding: 1rem 1.5rem 1.5rem;
+      text-align: center;
+
+      .access-btn {
+        width: 100%;
+        height: 44px;
+        border-radius: 22px;
+        font-weight: 500;
+        font-size: 1rem;
+        background: #4f7314;
+        color: white;
+
+        &:hover {
+          background: #3e5b10;
+        }
+
+        mat-icon {
+          margin-right: 0.5rem;
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+}
+
+.footer {
+  background: #4f4f4f;
+  color: #ccc;
+  text-align: center;
+  padding: 2rem;
+  margin-top: auto;
+  border-top: 1px solid rgba(98, 139, 24, 0.2);
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}

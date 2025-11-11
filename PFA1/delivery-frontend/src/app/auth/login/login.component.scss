@@ -1,0 +1,413 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+
+  // CDG Professional theme - consistent across all roles
+  background: linear-gradient(135deg, #4f4f4f 0%, #6b6b6b 100%); // grey gradient matching landing page
+  
+  // Role-specific accent overlays (subtle)
+  &.role-admin {
+    background: linear-gradient(135deg, #4f4f4f 0%, #5a5a5a 50%, #628B18 100%);
+  }
+
+  &.role-employee {
+    background: linear-gradient(135deg, #4f4f4f 0%, #5a5a5a 50%, #628B18 100%);
+  }
+
+  &.role-driver {
+    background: linear-gradient(135deg, #4f4f4f 0%, #5a5a5a 50%, #628B18 100%);
+  }
+}
+
+// Background decorative shapes
+.background-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(98, 139, 24, 0.15); // CDG olive green with transparency
+    animation: float 6s ease-in-out infinite;
+
+    &.shape-1 {
+      width: 200px;
+      height: 200px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    &.shape-2 {
+      width: 150px;
+      height: 150px;
+      top: 60%;
+      right: 10%;
+      animation-delay: 2s;
+    }
+
+    &.shape-3 {
+      width: 100px;
+      height: 100px;
+      bottom: 20%;
+      left: 20%;
+      animation-delay: 4s;
+    }
+  }
+}
+
+// Back button
+.back-button {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 10;
+  background: rgba(98, 139, 24, 0.3); // CDG olive green
+  color: white;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(98, 139, 24, 0.5);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(98, 139, 24, 0.5);
+    transform: translateX(-3px);
+    box-shadow: 0 4px 15px rgba(98, 139, 24, 0.3);
+  }
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+// Login card wrapper
+.login-card-wrapper {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 420px;
+  padding: 1rem;
+}
+
+// Main login card
+.login-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Card header
+.card-header {
+  text-align: center;
+  padding: 2rem 2rem 1rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+
+  .role-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+
+    mat-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: white;
+    }
+
+    &.icon-admin {
+      background: linear-gradient(135deg, #628B18, #4f7314); // CDG olive green
+    }
+
+    &.icon-employee {
+      background: linear-gradient(135deg, #628B18, #4f7314); // CDG olive green
+    }
+
+    &.icon-driver {
+      background: linear-gradient(135deg, #628B18, #4f7314); // CDG olive green
+    }
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .role-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .role-subtitle {
+    font-size: 1rem;
+    color: #4f4f4f; // CDG dark grey
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// Card content
+.card-content {
+  padding: 1rem 2rem 0;
+}
+
+// Login form
+.login-form {
+  .form-fields {
+    margin-bottom: 1.5rem;
+
+    .form-field {
+      width: 100%;
+      margin-bottom: 1.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .mat-mdc-form-field {
+        width: 100%;
+      }
+
+      mat-label {
+        font-weight: 500;
+      }
+
+      input {
+        font-size: 1rem;
+        padding: 0.75rem 0;
+      }
+
+      mat-icon {
+        color: #628B18; // CDG olive green for form icons
+      }
+    }
+  }
+
+  .messages {
+    margin-bottom: 1.5rem;
+    min-height: 24px;
+
+    .error-message,
+    .success-message {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      animation: slideIn 0.3s ease-out;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .error-message {
+      background: rgba(244, 67, 54, 0.1);
+      color: #d32f2f;
+      border: 1px solid rgba(244, 67, 54, 0.2);
+
+      mat-icon {
+        color: #d32f2f;
+      }
+    }
+
+    .success-message {
+      background: rgba(76, 175, 80, 0.1);
+      color: #388e3c;
+      border: 1px solid rgba(76, 175, 80, 0.2);
+
+      mat-icon {
+        color: #388e3c;
+      }
+    }
+  }
+
+  .login-button {
+    width: 100%;
+    height: 48px;
+    border-radius: 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: none;
+    background: linear-gradient(135deg, #628B18, #4f7314); // CDG olive green gradient
+    color: white;
+    box-shadow: 0 4px 15px rgba(98, 139, 24, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    .button-content {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #4f7314, #3e5b10); // Darker CDG green on hover
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(98, 139, 24, 0.4);
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    &.loading {
+      pointer-events: none;
+    }
+
+    mat-spinner {
+      margin: 0 auto;
+    }
+  }
+}
+
+// Card footer
+.card-footer {
+  text-align: center;
+  padding: 1.5rem 2rem 2rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+  p {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2d3748;
+    margin: 0 0 0.25rem 0;
+  }
+
+  small {
+    font-size: 0.85rem;
+    color: #4f4f4f; // CDG dark grey
+  }
+}
+
+// Animations
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(-1deg);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .login-container {
+    padding: 1rem;
+  }
+
+  .back-button {
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .login-card-wrapper {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .card-header {
+    padding: 1.5rem 1.5rem 1rem;
+
+    .role-icon {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 1rem;
+
+      mat-icon {
+        font-size: 30px;
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    .role-title {
+      font-size: 1.5rem;
+    }
+
+    .role-subtitle {
+      font-size: 0.9rem;
+    }
+  }
+
+  .card-content {
+    padding: 1rem 1.5rem 0;
+  }
+
+  .card-footer {
+    padding: 1rem 1.5rem 1.5rem;
+  }
+
+  .background-shapes {
+    .shape {
+      &.shape-1 {
+        width: 120px;
+        height: 120px;
+      }
+
+      &.shape-2 {
+        width: 80px;
+        height: 80px;
+      }
+
+      &.shape-3 {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  }
+}

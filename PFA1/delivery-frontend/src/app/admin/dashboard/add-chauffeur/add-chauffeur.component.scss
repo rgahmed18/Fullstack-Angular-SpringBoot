@@ -1,0 +1,135 @@
+.add-chauffeur-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #3f476d 0%, #628B18 100%);
+}
+
+.form-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  background: white;
+}
+
+.form-card mat-card-header {
+  margin-bottom: 20px;
+}
+
+.form-card mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-card mat-card-title mat-icon {
+  font-size: 28px;
+  color: #628B18;
+}
+
+.chauffeur-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.checkbox-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.checkbox-field mat-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-field mat-hint {
+  font-size: 12px;
+  color: #666;
+  margin-left: 32px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.form-actions button {
+  flex: 1;
+  height: 48px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.form-actions button mat-icon {
+  font-size: 20px;
+}
+
+.form-actions button mat-spinner {
+  margin-right: 8px;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .add-chauffeur-container {
+    padding: 10px;
+    min-height: 100vh;
+  }
+  
+  .form-card {
+    max-width: 100%;
+    padding: 15px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .form-actions button {
+    width: 100%;
+  }
+}
+
+// Custom styling for form fields
+mat-form-field {
+  .mat-form-field-outline {
+    border-radius: 8px;
+  }
+  
+  .mat-form-field-label {
+    font-weight: 500;
+  }
+}
+
+// Error styling
+mat-error {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+// Password visibility toggle
+mat-icon[matSuffix] {
+  cursor: pointer;
+  user-select: none;
+}

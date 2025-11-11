@@ -1,0 +1,119 @@
+<div class="mes-missions-container">
+  <div class="page-content">
+    <div class="missions-tabs">
+      <mat-tab-group [(selectedIndex)]="selectedTabIndex" class="missions-tab-group">
+        <mat-tab label="En Cours">
+          <div class="tab-content">
+            <div *ngIf="loading" class="loading-container">
+              <mat-spinner diameter="40"></mat-spinner>
+              <p>Chargement des missions...</p>
+            </div>
+            
+            <div *ngIf="!loading && getActiveMissions().length === 0" class="empty-state">
+              <mat-icon class="empty-icon">assignment</mat-icon>
+              <h3>Aucune mission active</h3>
+              <p>Vous n'avez actuellement aucune mission en cours.</p>
+            </div>
+
+            <div *ngIf="!loading && getActiveMissions().length > 0" class="missions-grid">
+              <div *ngFor="let mission of getActiveMissions()" class="mission-card">
+                <div class="mission-header">
+                  <div class="mission-type">
+                    <mat-icon>{{getMissionTypeIcon(mission.typeMission)}}</mat-icon>
+                    <span>{{mission.typeMission || 'Mission'}}</span>
+                  </div>
+                  <mat-chip [color]="getStatusColor(mission.etat)" selected>
+                    {{getStatusLabel(mission.etat)}}
+                  </mat-chip>
+                </div>
+                
+                <div class="mission-content">
+                  <h3>Mission #{{mission.id}}</h3>
+                  <div class="mission-details">
+                    <div class="detail-item">
+                      <mat-icon>location_on</mat-icon>
+                      <span><strong>De:</strong> {{mission.depart || 'Non défini'}}</span>
+                    </div>
+                    <div class="detail-item">
+                      <mat-icon>flag</mat-icon>
+                      <span><strong>À:</strong> {{mission.destination || 'Non défini'}}</span>
+                    </div>
+                    <div class="detail-item" *ngIf="mission.dateHeure">
+                      <mat-icon>schedule</mat-icon>
+                      <span><strong>Départ:</strong> {{formatDate(mission.dateHeure)}}</span>
+                    </div>
+                    <div class="detail-item" *ngIf="mission.chauffeurNom">
+                      <mat-icon>person</mat-icon>
+                      <span><strong>Chauffeur:</strong> {{mission.chauffeurNom}} {{mission.chauffeurPrenom}}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="mission-actions">
+                  <button mat-button color="primary" (click)="viewMissionDetails(mission.id)">
+                    <mat-icon>visibility</mat-icon>
+                    Détails
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="En Attente">
+          <div class="tab-content">
+            <div *ngIf="loading" class="loading-container">
+              <mat-spinner diameter="40"></mat-spinner>
+              <p>Chargement des missions...</p>
+            </div>
+            
+            <div *ngIf="!loading && getPendingMissions().length === 0" class="empty-state">
+              <mat-icon class="empty-icon">schedule</mat-icon>
+              <h3>Aucune mission en attente</h3>
+              <p>Toutes vos missions ont été traitées.</p>
+            </div>
+
+            <div *ngIf="!loading && getPendingMissions().length > 0" class="missions-grid">
+              <div *ngFor="let mission of getPendingMissions()" class="mission-card">
+                <div class="mission-header">
+                  <div class="mission-type">
+                    <mat-icon>{{getMissionTypeIcon(mission.typeMission)}}</mat-icon>
+                    <span>{{mission.typeMission || 'Mission'}}</span>
+                  </div>
+                  <mat-chip [color]="getStatusColor(mission.etat)" selected>
+                    {{getStatusLabel(mission.etat)}}
+                  </mat-chip>
+                </div>
+                
+                <div class="mission-content">
+                  <h3>Mission #{{mission.id}}</h3>
+                  <div class="mission-details">
+                    <div class="detail-item">
+                      <mat-icon>location_on</mat-icon>
+                      <span><strong>De:</strong> {{mission.depart || 'Non défini'}}</span>
+                    </div>
+                    <div class="detail-item">
+                      <mat-icon>flag</mat-icon>
+                      <span><strong>À:</strong> {{mission.destination || 'Non défini'}}</span>
+                    </div>
+                    <div class="detail-item" *ngIf="mission.dateHeure">
+                      <mat-icon>schedule</mat-icon>
+                      <span><strong>Départ:</strong> {{formatDate(mission.dateHeure)}}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="mission-actions">
+                  <button mat-button color="primary" (click)="viewMissionDetails(mission.id)">
+                    <mat-icon>visibility</mat-icon>
+                    Détails
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

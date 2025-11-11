@@ -1,0 +1,151 @@
+<!-- Loading State -->
+<div *ngIf="loading" class="loading-container">
+  <mat-spinner diameter="50"></mat-spinner>
+  <p>Chargement des missions...</p>
+</div>
+
+<!-- Error State -->
+<div *ngIf="error && !loading" class="error-container">
+  <mat-icon class="error-icon">error_outline</mat-icon>
+  <h2>Erreur</h2>
+  <p>{{ error }}</p>
+  <button mat-raised-button color="primary" (click)="loadDashboardData()">
+    <mat-icon>refresh</mat-icon>
+    Réessayer
+  </button>
+</div>
+
+<!-- Mes missions Content -->
+<div *ngIf="!loading && !error">
+  <!-- Stats Cards -->
+ 
+  <!-- Missions du Jour -->
+  <mat-card class="content-card">
+    <mat-card-header>
+      <mat-card-title>Missions d'Aujourd'hui</mat-card-title>
+      <mat-card-subtitle>Gérez vos missions assignées pour aujourd'hui</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="missions-list">
+        <div *ngFor="let mission of getTodayMissions()" class="mission-card">
+          <div class="mission-header">
+            <div class="mission-info">
+              <div class="mission-icon">
+                <mat-icon>place</mat-icon>
+              </div>
+              <div class="mission-details">
+                <h3>Mission #{{ mission.id }}</h3>
+                <p class="employee-name">Demandé par: Employé</p>
+                <div class="mission-meta">
+                  <span class="mission-time">
+                    <mat-icon>schedule</mat-icon>
+                    {{ formatTime(mission.dateHeure) }}
+                  </span>
+                  <mat-chip [color]="getStatusColor(mission.etat)" selected>
+                    {{ getStatusText(mission.etat) }}
+                  </mat-chip>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mission-body">
+            <div class="mission-route">
+              <div class="route-item departure-item">
+                <div class="route-icon">
+                  <mat-icon>my_location</mat-icon>
+                </div>
+                <div class="route-content">
+                  <p class="route-label">Point de Départ</p>
+                  <p class="route-value">{{ mission.depart }}</p>
+                </div>
+              </div>
+              <div class="route-arrow">
+                <mat-icon class="arrow-icon">trending_flat</mat-icon>
+              </div>
+              <div class="route-item destination-item">
+                <div class="route-icon">
+                  <mat-icon>place</mat-icon>
+                </div>
+                <div class="route-content">
+                  <p class="route-label">Destination</p>
+                  <p class="route-value">{{ mission.destination }}</p>
+                </div>
+              </div>
+              <div class="route-item material-item">
+                <div class="route-icon">
+                  <mat-icon>category</mat-icon>
+                </div>
+                <div class="route-content">
+                  <p class="route-label">Type de Mission</p>
+                  <p class="route-value">{{ mission.typeMission }}</p>
+                </div>
+              </div>
+              <div class="route-item instructions-item" *ngIf="mission.instructions">
+                <div class="route-icon">
+                  <mat-icon>description</mat-icon>
+                </div>
+                <div class="route-content">
+                  <p class="route-label">Instructions Spéciales</p>
+                  <p class="route-value">{{ mission.instructions }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mission-actions">
+            <!-- Mission Waiting for Driver Response -->
+            <ng-container *ngIf="canAcceptMission(mission)">
+              <button mat-stroked-button color="warn" class="refuse-btn" (click)="refuseMission(mission)">
+                <mat-icon>thumb_down</mat-icon>
+                Refuser
+              </button>
+              <button mat-raised-button color="primary" class="accept-btn" (click)="acceptMission(mission)">
+                <mat-icon>thumb_up</mat-icon>
+                Accepter
+              </button>
+            </ng-container>
+
+            <!-- Mission Accepted, Ready to Start -->
+            <ng-container *ngIf="canStartMission(mission)">
+              <button mat-raised-button color="primary" class="start-btn" (click)="startMission(mission)">
+                <mat-icon>play_arrow</mat-icon>
+                Commencer
+              </button>
+            </ng-container>
+
+            <!-- Mission in Progress -->
+            <ng-container *ngIf="canCompleteMission(mission)">
+              <button mat-stroked-button color="warn" class="problem-btn" (click)="reportProblemDialog(mission)">
+                <mat-icon>report_problem</mat-icon>
+                Signaler Problème
+              </button>
+              <button mat-raised-button color="accent" class="complete-btn" (click)="completeMission(mission)">
+                <mat-icon>check_circle</mat-icon>
+                Terminer
+              </button>
+            </ng-container>
+
+            <!-- Mission Completed or Refused -->
+            <ng-container *ngIf="mission.etat === 'TERMINEE' || mission.etat === 'REFUSEE'">
+              <mat-chip [color]="getStatusColor(mission.etat)" selected class="status-chip">
+                <mat-icon>{{ mission.etat === 'TERMINEE' ? 'check_circle' : 'cancel' }}</mat-icon>
+                {{ getStatusText(mission.etat) }}
+              </mat-chip>
+            </ng-container>
+
+            <button mat-stroked-button class="details-btn" (click)="viewMissionDetails(mission.id)">
+              <mat-icon>visibility</mat-icon>
+              Détails
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="getTodayMissions().length === 0" class="empty-state">
+          <mat-icon>assignment</mat-icon>
+          <p>Aucune mission pour aujourd'hui</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

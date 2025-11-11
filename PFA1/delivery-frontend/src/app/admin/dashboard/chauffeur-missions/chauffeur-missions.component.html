@@ -1,0 +1,202 @@
+<div class="missions-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <button mat-icon-button (click)="onBack()" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="header-text">
+          <h1>Missions de {{ chauffeurPrenom }} {{ chauffeurNom }}</h1>
+          <p>Historique complet des missions du chauffeur</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Chargement des missions...</p>
+    </div>
+
+    <!-- Missions Content -->
+    <div *ngIf="!isLoading" class="missions-content">
+      <!-- Statistics Cards -->
+      <div class="stats-grid">
+        <mat-card class="stat-card pending">
+          <div class="stat-content">
+            <div class="stat-icon">
+              <mat-icon>schedule</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3>{{ pendingMissions.length }}</h3>
+              <p>En attente</p>
+            </div>
+          </div>
+        </mat-card>
+
+        <mat-card class="stat-card active">
+          <div class="stat-content">
+            <div class="stat-icon">
+              <mat-icon>directions_car</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3>{{ activeMissions.length }}</h3>
+              <p>En cours</p>
+            </div>
+          </div>
+        </mat-card>
+
+        <mat-card class="stat-card completed">
+          <div class="stat-content">
+            <div class="stat-icon">
+              <mat-icon>check_circle</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3>{{ completedMissions.length }}</h3>
+              <p>Terminées</p>
+            </div>
+          </div>
+        </mat-card>
+
+        <mat-card class="stat-card refused">
+          <div class="stat-content">
+            <div class="stat-icon">
+              <mat-icon>cancel</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3>{{ refusedMissions.length }}</h3>
+              <p>Refusées</p>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+
+      <!-- Missions Tabs -->
+      <mat-card class="missions-card">
+        <mat-tab-group class="missions-tabs" animationDuration="300ms" (selectedTabChange)="onTabChange($event)">
+          <!-- All Missions Tab -->
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon>list</mat-icon>
+              Toutes les missions
+              <span class="tab-badge" [matBadge]="allMissions.length" matBadgeSize="small" matBadgeColor="primary"></span>
+            </ng-template>
+          </mat-tab>
+
+          <!-- Pending Missions Tab -->
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon>schedule</mat-icon>
+              En attente
+              <span class="tab-badge" [matBadge]="pendingMissions.length" matBadgeSize="small" matBadgeColor="accent"></span>
+            </ng-template>
+          </mat-tab>
+
+          <!-- Active Missions Tab -->
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon>directions_car</mat-icon>
+              En cours
+              <span class="tab-badge" [matBadge]="activeMissions.length" matBadgeSize="small" matBadgeColor="primary"></span>
+            </ng-template>
+          </mat-tab>
+
+          <!-- Completed Missions Tab -->
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon>check_circle</mat-icon>
+              Terminées
+              <span class="tab-badge" [matBadge]="completedMissions.length" matBadgeSize="small" matBadgeColor="primary"></span>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+
+        <!-- Single Table Content -->
+        <div class="tab-content">
+          <div *ngIf="currentTabMissions.length === 0" class="empty-state">
+            <mat-icon>{{ getEmptyStateIcon() }}</mat-icon>
+            <h3>{{ getEmptyStateTitle() }}</h3>
+            <p>{{ getEmptyStateMessage() }}</p>
+          </div>
+
+          <div *ngIf="currentTabMissions.length > 0" class="table-container">
+            <table mat-table [dataSource]="currentTabMissions" class="missions-table">
+              <!-- ID Column -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let mission">
+                  <span class="mission-id">#{{ mission.id }}</span>
+                </td>
+              </ng-container>
+
+              <!-- Route Column -->
+              <ng-container matColumnDef="route">
+                <th mat-header-cell *matHeaderCellDef>Itinéraire</th>
+                <td mat-cell *matCellDef="let mission">
+                  <div class="route-info">
+                    <span class="route-text">{{ formatRoute(mission) }}</span>
+                    <small class="route-details">{{ formatVehicule(mission) }}</small>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Type Column -->
+              <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>Type</th>
+                <td mat-cell *matCellDef="let mission">
+                  <mat-chip [ngClass]="getTypeClass(mission.typeMission)" class="type-chip">
+                    <mat-icon>{{ getTypeIcon(mission.typeMission) }}</mat-icon>
+                    {{ mission.typeMission }}
+                  </mat-chip>
+                </td>
+              </ng-container>
+
+              <!-- Employee Column -->
+              <ng-container matColumnDef="employe">
+                <th mat-header-cell *matHeaderCellDef>Employé</th>
+                <td mat-cell *matCellDef="let mission">
+                  <div class="employee-info">
+                    <mat-icon>person</mat-icon>
+                    <span>{{ formatEmploye(mission.employe) }}</span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Date Column -->
+              <ng-container matColumnDef="dateHeure">
+                <th mat-header-cell *matHeaderCellDef>Date & Heure</th>
+                <td mat-cell *matCellDef="let mission">
+                  <div class="date-info">
+                    <mat-icon>schedule</mat-icon>
+                    <span>{{ formatDate(mission.dateHeure) }}</span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Status Column -->
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Statut</th>
+                <td mat-cell *matCellDef="let mission">
+                  <mat-chip [ngClass]="getStatusClass(mission.etat)" class="status-chip">
+                    <mat-icon>{{ getStatusIcon(mission.etat) }}</mat-icon>
+                    {{ getStatusLabel(mission.etat) }}
+                  </mat-chip>
+                </td>
+              </ng-container>
+
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mission-row"></tr>
+            </table>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

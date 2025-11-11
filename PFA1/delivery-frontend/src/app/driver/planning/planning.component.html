@@ -1,0 +1,49 @@
+<!-- Loading State -->
+<div *ngIf="loading" class="loading-container">
+  <mat-spinner diameter="50"></mat-spinner>
+  <p>Chargement du planning...</p>
+</div>
+
+<!-- Error State -->
+<div *ngIf="error && !loading" class="error-container">
+  <mat-icon class="error-icon">error_outline</mat-icon>
+  <h2>Erreur</h2>
+  <p>{{ error }}</p>
+  <button mat-raised-button color="primary" (click)="loadMissions()">
+    <mat-icon>refresh</mat-icon>
+    Réessayer
+  </button>
+</div>
+
+<!-- Planning Content -->
+<div *ngIf="!loading && !error">
+  <mat-card class="content-card">
+    <mat-card-content>
+      <div class="calendar-schedule">
+        <!-- Calendar Header -->
+        <div class="calendar-header">
+          <div class="day-column" *ngFor="let day of getWeekDays()">
+            <div class="day-name">{{ day.name }}</div>
+            <div class="day-number">{{ getDayNumber(day.date) }}</div>
+          </div>
+        </div>
+        
+        <!-- Calendar Body -->
+        <div class="calendar-body">
+          <div class="day-column" *ngFor="let day of getWeekDays()">
+            <div class="day-missions">
+              <div class="mission-block" *ngFor="let mission of getMissionsForDay(day.date)">
+                <div class="mission-time">{{ formatTime(mission.dateHeure) }}</div>
+                <div class="mission-info">Mission {{ mission.id }}</div>
+              </div>
+              
+              <div class="empty-day" *ngIf="getMissionsForDay(day.date).length === 0">
+                <!-- Empty day -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

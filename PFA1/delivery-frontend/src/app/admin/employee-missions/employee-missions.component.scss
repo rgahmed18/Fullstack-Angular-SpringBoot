@@ -1,0 +1,404 @@
+.employee-missions-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 16px;
+h2 {
+  margin: 0;
+  font-weight: 600;
+  background: linear-gradient(135deg, #212124 0%, #57751e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+  }
+
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    text-align: center;
+
+    mat-spinner {
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: #666;
+      margin: 0;
+    }
+  }
+
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    text-align: center;
+
+    mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 24px;
+    }
+  }
+
+  .missions-content {
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+
+      .summary-card {
+        &.total {
+          .summary-content mat-icon {
+            color: #2196f3;
+          }
+        }
+
+        &.active {
+          .summary-content mat-icon {
+            color: #ff9800;
+          }
+        }
+
+        &.completed {
+          .summary-content mat-icon {
+            color: #4caf50;
+          }
+        }
+
+        .summary-content {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+
+          mat-icon {
+            font-size: 32px;
+            width: 32px;
+            height: 32px;
+          }
+
+          .summary-text {
+            h3 {
+              margin: 0;
+              font-size: 24px;
+              font-weight: 600;
+              color: #000 !important;
+            }
+
+            p {
+              margin: 0;
+              color: #000 !important;
+              font-size: 14px;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+
+    .missions-table-card {
+      .no-missions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 48px;
+        text-align: center;
+
+        mat-icon {
+          font-size: 64px;
+          width: 64px;
+          height: 64px;
+          color: #ccc;
+          margin-bottom: 16px;
+        }
+
+        p {
+          color: #666;
+          margin: 0;
+          font-size: 16px;
+        }
+      }
+
+      .missions-table {
+        width: 100%;
+
+        th {
+          background-color: #f5f5f5;
+          font-size: 14px;
+          padding: 16px 12px;
+        }
+
+        td {
+          padding: 16px 12px;
+          border-bottom: 1px solid #e0e0e0;
+        }
+
+        .mission-info {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          min-width: 220px;
+
+          .mission-title {
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.4;
+          }
+
+          .mission-id {
+            color: #1976d2;
+            font-size: 13px;
+            font-weight: 700;
+            background-color: #e3f2fd;
+            padding: 6px 12px;
+            border-radius: 16px;
+            display: inline-block;
+            width: fit-content;
+            border: 1px solid #bbdefb;
+            text-shadow: none;
+          }
+
+          .mission-chauffeur {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #4caf50;
+            font-size: 13px;
+            font-weight: 500;
+            background-color: #e8f5e8;
+            padding: 4px 10px;
+            border-radius: 12px;
+            width: fit-content;
+            border: 1px solid #c8e6c9;
+
+            .chauffeur-icon {
+              font-size: 16px;
+              width: 16px;
+              height: 16px;
+              color: #4caf50;
+            }
+
+            span {
+              color: #2e7d32;
+              font-weight: 600;
+            }
+          }
+        }
+
+        .route-info {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          min-width: 280px;
+          max-width: 350px;
+
+          .route-section {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+
+            .route-label {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              font-size: 13px;
+
+              .route-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+
+                &.departure {
+                  color: #4caf50;
+                }
+
+                &.arrival {
+                  color: #f44336;
+                }
+              }
+
+              strong {
+                color: #333;
+                font-weight: 600;
+              }
+            }
+
+            .route-address {
+              color: #555;
+              font-size: 14px;
+              line-height: 1.4;
+              padding-left: 26px;
+              background-color: #fafafa;
+              padding: 8px 12px;
+              border-radius: 6px;
+              border-left: 3px solid #e0e0e0;
+            }
+          }
+
+          .route-divider {
+            display: flex;
+            justify-content: center;
+            margin: 4px 0;
+
+            .arrow-icon {
+              font-size: 20px;
+              width: 20px;
+              height: 20px;
+              color: #666;
+              background-color: #f0f0f0;
+              border-radius: 50%;
+              padding: 4px;
+            }
+          }
+        }
+
+        .datetime-info {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          min-width: 160px;
+
+          .date-section, .time-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background-color: #fafafa;
+
+            .datetime-icon {
+              font-size: 18px;
+              width: 18px;
+              height: 18px;
+              color: #666;
+            }
+
+            .date-text {
+              font-weight: 600;
+              color: #333;
+              font-size: 14px;
+            }
+
+            .time-text {
+              font-weight: 600;
+              color: #555;
+              font-size: 14px;
+            }
+          }
+
+          .date-section {
+            border-left: 3px solid #2196f3;
+          }
+
+          .time-section {
+            border-left: 3px solid #ff9800;
+          }
+        }
+
+        mat-chip-set {
+          mat-chip {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .employee-missions-container {
+    padding: 16px;
+
+    .missions-content {
+      .summary-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .missions-table-card {
+        .missions-table {
+          .route-info {
+            max-width: 150px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+  .employee-missions-container {
+    .header h2 {
+      color: #fff;
+    }
+
+    .loading-container p,
+    .error-container p {
+      color: #ccc;
+    }
+
+    .missions-content {
+      .summary-cards {
+        .summary-card {
+          .summary-content {
+            .summary-text {
+              h3 {
+                color: #fff;
+              }
+
+              p {
+                color: #ccc;
+              }
+            }
+          }
+        }
+      }
+
+      .missions-table-card {
+        .no-missions p {
+          color: #ccc;
+        }
+
+        .missions-table {
+          .mission-info {
+            strong {
+              color: #fff;
+            }
+
+            small {
+              color: #ccc;
+            }
+          }
+
+          .datetime-info {
+            .date {
+              color: #fff;
+            }
+
+            .time {
+              color: #ccc;
+            }
+          }
+        }
+      }
+    }
+  }
+}

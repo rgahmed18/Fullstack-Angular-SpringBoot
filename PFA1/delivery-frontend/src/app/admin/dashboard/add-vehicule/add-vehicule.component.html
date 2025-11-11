@@ -1,0 +1,115 @@
+<div class="add-vehicule-container">
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>directions_car</mat-icon>
+        Ajouter un Véhicule
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="vehiculeForm" (ngSubmit)="onSubmit()" class="vehicule-form">
+        
+        <!-- Immatriculation -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Immatriculation</mat-label>
+          <input matInput 
+                 formControlName="immatriculation" 
+                 placeholder="Ex: 123456-A-01"
+                 maxlength="20">
+          <mat-icon matSuffix>confirmation_number</mat-icon>
+          <mat-error *ngIf="hasError('immatriculation', 'required')">
+            L'immatriculation est requise
+          </mat-error>
+          <mat-error *ngIf="hasError('immatriculation', 'minlength')">
+            L'immatriculation doit contenir au moins 3 caractères
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Marque -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Marque</mat-label>
+          <input matInput 
+                 formControlName="marque" 
+                 placeholder="Ex: Renault, Peugeot, Mercedes"
+                 maxlength="50">
+          <mat-icon matSuffix>business</mat-icon>
+          <mat-error *ngIf="hasError('marque', 'required')">
+            La marque est requise
+          </mat-error>
+          <mat-error *ngIf="hasError('marque', 'minlength')">
+            La marque doit contenir au moins 2 caractères
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Modèle -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Modèle</mat-label>
+          <input matInput 
+                 formControlName="modele" 
+                 placeholder="Ex: Master, Boxer, Sprinter"
+                 maxlength="50">
+          <mat-icon matSuffix>local_shipping</mat-icon>
+          <mat-error *ngIf="hasError('modele', 'required')">
+            Le modèle est requis
+          </mat-error>
+          <mat-error *ngIf="hasError('modele', 'minlength')">
+            Le modèle doit contenir au moins 2 caractères
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Capacité -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Capacité (kg)</mat-label>
+          <input matInput 
+                 type="number" 
+                 formControlName="capacite" 
+                 placeholder="Ex: 1000, 3500"
+                 min="1"
+                 max="50000">
+          <mat-icon matSuffix>fitness_center</mat-icon>
+          <mat-error *ngIf="hasError('capacite', 'required')">
+            La capacité est requise
+          </mat-error>
+          <mat-error *ngIf="hasError('capacite', 'min')">
+            La capacité doit être supérieure à 0
+          </mat-error>
+          <mat-error *ngIf="hasError('capacite', 'max')">
+            La capacité ne peut pas dépasser 50000 kg
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Disponibilité -->
+        <div class="checkbox-field">
+          <mat-checkbox formControlName="disponible" color="primary">
+            <mat-icon>check_circle</mat-icon>
+            Véhicule disponible
+          </mat-checkbox>
+          <mat-hint>Cochez si le véhicule est prêt à être utilisé</mat-hint>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button mat-raised-button 
+                  type="button" 
+                  color="warn" 
+                  (click)="onCancel()"
+                  [disabled]="isLoading">
+            <mat-icon>cancel</mat-icon>
+            Annuler
+          </button>
+          
+          <button mat-raised-button 
+                  type="submit" 
+                  color="primary" 
+                  [disabled]="vehiculeForm.invalid || isLoading">
+            <mat-icon *ngIf="!isLoading">add</mat-icon>
+            <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+            {{ isLoading ? 'Ajout en cours...' : 'Ajouter le Véhicule' }}
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

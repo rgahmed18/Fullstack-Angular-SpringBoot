@@ -1,0 +1,352 @@
+.mes-missions-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(156, 163, 175, 0.1) 100%);
+    pointer-events: none;
+  }
+}
+
+.page-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 24px 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-radius: 0 0 20px 20px;
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .back-button {
+      color: #64748b;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #3b82f6;
+        background: rgba(59, 130, 246, 0.1);
+      }
+    }
+
+    .header-title {
+      h1 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 0 4px 0;
+        font-size: 32px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+
+        mat-icon {
+          font-size: 36px;
+          background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      }
+
+      p {
+        margin: 0;
+        font-size: 16px;
+        color: #64748b;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.page-content {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Missions Tabs
+.missions-tabs {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+
+  .missions-tab-group {
+    ::ng-deep .mat-mdc-tab-header {
+      background: linear-gradient(135deg, rgba(132, 204, 22, 0.05) 0%, rgba(101, 163, 13, 0.05) 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    ::ng-deep .mat-mdc-tab-label {
+      font-weight: 600;
+      color: #64748b;
+      transition: all 0.3s ease;
+      
+      &.mdc-tab--active {
+        background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+
+    ::ng-deep .mat-mdc-tab-body-wrapper {
+      background: white;
+    }
+  }
+}
+
+.tab-content {
+  padding: 32px;
+}
+
+// Loading State
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  gap: 16px;
+
+  p {
+    color: #64748b;
+    font-size: 14px;
+  }
+}
+
+// Mission Cards
+.missions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 24px;
+}
+
+.mission-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(132, 204, 22, 0.2);
+    border-color: rgba(132, 204, 22, 0.3);
+    
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+.mission-header {
+  padding: 24px 28px 20px 28px;
+  background: linear-gradient(135deg, rgba(132, 204, 22, 0.05) 0%, rgba(101, 163, 13, 0.05) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .mission-type {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+
+    mat-icon {
+      background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 22px;
+    }
+  }
+}
+
+.mission-content {
+  padding: 24px 28px;
+
+  h3 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .mission-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: #64748b;
+      padding: 8px 0;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #475569;
+        transform: translateX(4px);
+      }
+
+      mat-icon {
+        font-size: 18px;
+        background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+  }
+}
+
+.mission-actions {
+  padding: 20px 28px 24px 28px;
+  background: linear-gradient(135deg, rgba(132, 204, 22, 0.02) 0%, rgba(101, 163, 13, 0.02) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 15px rgba(132, 204, 22, 0.3);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(132, 204, 22, 0.4);
+    }
+
+    mat-icon {
+      color: white;
+    }
+  }
+}
+
+// Empty States
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  text-align: center;
+
+  .empty-icon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, rgba(132, 204, 22, 0.1) 0%, rgba(101, 163, 13, 0.1) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+      z-index: -1;
+      opacity: 0.1;
+    }
+
+    mat-icon {
+      font-size: 42px;
+      background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  h3 {
+    margin: 0 0 12px 0;
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+    color: #64748b;
+    font-weight: 500;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .page-content {
+    padding: 16px;
+  }
+
+  .missions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tab-content {
+    padding: 16px;
+  }
+
+  .page-header {
+    padding: 16px;
+  }
+}

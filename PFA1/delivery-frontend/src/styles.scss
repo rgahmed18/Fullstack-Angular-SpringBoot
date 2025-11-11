@@ -1,0 +1,76 @@
+/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* Basic CSS reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Global styles for leave notification popups */
+.popup-notification-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9998;
+  pointer-events: none;
+}
+
+/* Ensure popup notifications are above everything */
+app-leave-notification-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Global animation for notification bell badge */
+.notification-bell-pulse {
+  animation: bellPulse 2s infinite;
+}
+
+@keyframes bellPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Beautiful snackbar styles for chauffeur deletion */
+.success-snackbar {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: white !important;
+}
+
+.success-snackbar .mat-mdc-snack-bar-label {
+  color: white !important;
+}
+
+.error-snackbar {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  color: white !important;
+}
+
+.error-snackbar .mat-mdc-snack-bar-label {
+  color: white !important;
+}
+.header-icon {
+  color: #628B18 !important; /* Olive green */
+  font-size: 28px;           /* Optional: make it a bit larger */
+  vertical-align: middle;    /* Keeps it aligned with text */
+}

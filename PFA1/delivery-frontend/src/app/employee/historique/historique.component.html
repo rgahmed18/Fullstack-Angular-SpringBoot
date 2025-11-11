@@ -1,0 +1,59 @@
+<div class="historique-container">
+  <div class="page-content">
+    <div class="historique-content">
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Chargement de l'historique...</p>
+      </div>
+      
+      <div *ngIf="!loading && getCompletedMissions().length === 0" class="empty-state">
+        <mat-icon class="empty-icon">history</mat-icon>
+        <h3>Aucune mission terminée</h3>
+        <p>Votre historique de missions apparaîtra ici une fois que vous aurez terminé des missions.</p>
+      </div>
+
+      <div *ngIf="!loading && getCompletedMissions().length > 0" class="missions-grid">
+        <div *ngFor="let mission of getCompletedMissions()" class="mission-card completed">
+          <div class="mission-header">
+            <div class="mission-type">
+              <mat-icon>{{getMissionTypeIcon(mission.typeMission)}}</mat-icon>
+              <span>{{mission.typeMission || 'Mission'}}</span>
+            </div>
+            <mat-chip [color]="getStatusColor(mission.etat)" selected>
+              {{getStatusLabel(mission.etat)}}
+            </mat-chip>
+          </div>
+          
+          <div class="mission-content">
+            <h3>Mission #{{mission.id}}</h3>
+            <div class="mission-details">
+              <div class="detail-item">
+                <mat-icon>location_on</mat-icon>
+                <span><strong>De:</strong> {{mission.depart || 'Non défini'}}</span>
+              </div>
+              <div class="detail-item">
+                <mat-icon>flag</mat-icon>
+                <span><strong>À:</strong> {{mission.destination || 'Non défini'}}</span>
+              </div>
+              <div class="detail-item" *ngIf="mission.dateHeure">
+                <mat-icon>schedule</mat-icon>
+                <span><strong>Terminée le:</strong> {{formatDate(mission.dateHeure)}}</span>
+              </div>
+              <div class="detail-item" *ngIf="mission.chauffeurNom">
+                <mat-icon>person</mat-icon>
+                <span><strong>Chauffeur:</strong> {{mission.chauffeurNom}} {{mission.chauffeurPrenom}}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mission-actions">
+            <button mat-button color="primary" (click)="viewMissionDetails(mission.id)">
+              <mat-icon>visibility</mat-icon>
+              Détails
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

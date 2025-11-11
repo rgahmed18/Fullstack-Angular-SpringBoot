@@ -1,0 +1,98 @@
+<div class="landing-container">
+  <div class="header">
+    <div class="logo-section">
+      <div class="logo-container">
+        <img src="/images/cdg-logo.png" alt="CDG Logo" class="cdg-logo">
+      </div>
+      <div class="logo-text">
+        <h1>Système de Gestion des Missions</h1>
+        <span class="company-name">CDG</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="access-section">
+      <h2 class="access-title">Accès au Système</h2>
+      <p class="access-subtitle">Sélectionnez votre rôle pour accéder à votre espace de travail</p>
+    </div>
+    
+    <div class="cards-container">
+      <mat-card class="role-card" (click)="navigateToLogin('/admin/login')">
+        <mat-card-header>
+          <div mat-card-avatar class="card-avatar admin">
+            <mat-icon>admin_panel_settings</mat-icon>
+          </div>
+          <mat-card-title>Administrateur</mat-card-title>
+          <mat-card-subtitle>Gestion complète du système</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="features">
+            <li>• Gestion des employés et chauffeurs</li>
+            <li>• Gestion des véhicules</li>
+            <li>• Création et suivi des missions</li>
+            <li>• Rapports et statistiques</li>
+          </ul>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" class="access-btn">
+            <mat-icon>login</mat-icon>
+            Accéder
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="role-card" (click)="navigateToLogin('/employee/login')">
+        <mat-card-header>
+          <div mat-card-avatar class="card-avatar employee">
+            <mat-icon>person</mat-icon>
+          </div>
+          <mat-card-title>Employé</mat-card-title>
+          <mat-card-subtitle>Gestion des missions</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="features">
+            <li>• Suivi des missions en cours</li>
+            <li>• Communication avec l'équipe</li>
+            <li>• Rapports d'activité</li>
+            <li>• Historique des tâches</li>
+          </ul>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="accent" class="access-btn">
+            <mat-icon>login</mat-icon>
+            Accéder
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="role-card" (click)="navigateToLogin('/driver/login')">
+        <mat-card-header>
+          <div mat-card-avatar class="card-avatar driver">
+            <mat-icon>drive_eta</mat-icon>
+          </div>
+          <mat-card-title>Chauffeur</mat-card-title>
+          <mat-card-subtitle>Exécution des livraisons</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="features">
+            <li>• Missions assignées</li>
+            <li>• Navigation et itinéraires</li>
+            <li>• Mise à jour du statut</li>
+            <li>• Historique des courses</li>
+          </ul>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="warn" class="access-btn">
+            <mat-icon>login</mat-icon>
+            Accéder
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 Système de Gestion des Missions - CDG</p>
+  </div>
+</div>

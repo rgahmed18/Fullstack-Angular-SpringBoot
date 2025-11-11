@@ -1,0 +1,146 @@
+<div class="create-mission-container">
+  <mat-card class="mission-card">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon class="header-icon">assignment_add</mat-icon>
+      </div>
+      <mat-card-title>Créer une Nouvelle Mission</mat-card-title>
+      <mat-card-subtitle>Remplissez les informations de la mission</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Chargement des données...</p>
+      </div>
+
+      <div *ngIf="error" class="error-message">
+        <mat-icon>error</mat-icon>
+        <span>{{ error }}</span>
+        <button mat-button (click)="loadFormData()" class="retry-button">
+          <mat-icon>refresh</mat-icon>
+          Réessayer
+        </button>
+      </div>
+
+      <!-- Current Employee Info -->
+      <div *ngIf="!loading && !error" class="current-employee-info">
+        <mat-card class="employee-info-card">
+          <mat-card-content>
+            <div class="employee-info">
+              <mat-icon class="employee-icon">person</mat-icon>
+              <div class="employee-details">
+                <h4>Mission demandée par:</h4>
+                <p class="employee-name">{{ currentEmployeeName }}</p>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <form [formGroup]="missionForm" (ngSubmit)="onSubmit()" *ngIf="!loading && !error">
+        <div class="form-row">
+          <app-places-autocomplete
+            label="Destination"
+            placeholder="Tapez l'adresse de destination..."
+            formControlName="destination">
+          </app-places-autocomplete>
+        </div>
+
+        <div class="form-row">
+          <app-places-autocomplete
+            label="Point de Départ"
+            placeholder="Tapez l'adresse de départ..."
+            formControlName="depart">
+          </app-places-autocomplete>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Date de la Mission</mat-label>
+            <input matInput [matDatepicker]="datePicker" formControlName="dateMission" readonly>
+            <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+            <mat-datepicker #datePicker></mat-datepicker>
+            <mat-error *ngIf="missionForm.get('dateMission')?.hasError('required')">
+              La date est obligatoire
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Heure de la Mission</mat-label>
+            <mat-select formControlName="heureMission">
+              <mat-option *ngFor="let heure of heuresDisponibles" [value]="heure.value">
+                {{ heure.label }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>access_time</mat-icon>
+            <mat-error *ngIf="missionForm.get('heureMission')?.hasError('required')">
+              L'heure est obligatoire
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Type de Mission</mat-label>
+            <mat-select formControlName="typeMission">
+              <mat-option *ngFor="let type of missionTypes" [value]="type.value">
+                {{ type.label }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>category</mat-icon>
+            <mat-error *ngIf="missionForm.get('typeMission')?.hasError('required')">
+              Le type de mission est obligatoire
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Instructions (optionnel)</mat-label>
+            <textarea matInput formControlName="instructions" rows="3" 
+                      placeholder="Instructions spéciales pour cette mission..."></textarea>
+            <mat-icon matSuffix>description</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Chauffeur </mat-label>
+            <mat-select formControlName="chauffeurId">
+              <mat-option value="">Aucun chauffeur</mat-option>
+              <mat-option *ngFor="let chauffeur of formData.chauffeurs" [value]="chauffeur.id">
+                {{ getChauffeurName(chauffeur) }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>drive_eta</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Véhicule</mat-label>
+            <mat-select formControlName="vehiculeId">
+              <mat-option value="">Aucun véhicule</mat-option>
+              <mat-option *ngFor="let vehicule of formData.vehicules" [value]="vehicule.id">
+                {{ getVehiculeDisplay(vehicule) }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>directions_car</mat-icon>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end" *ngIf="!loading && !error">
+      <button mat-button (click)="onCancel()" [disabled]="submitting">
+        <mat-icon>cancel</mat-icon>
+        Annuler
+      </button>
+      <button mat-raised-button color="primary" (click)="onSubmit()" 
+              [disabled]="!missionForm.valid || submitting">
+        <mat-spinner diameter="20" *ngIf="submitting"></mat-spinner>
+        <mat-icon *ngIf="!submitting">save</mat-icon>
+        {{ submitting ? 'Création...' : 'Créer Mission' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

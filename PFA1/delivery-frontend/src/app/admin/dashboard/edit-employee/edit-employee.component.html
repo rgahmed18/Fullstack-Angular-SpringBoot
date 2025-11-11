@@ -1,0 +1,108 @@
+<div class="edit-employee-container">
+  <mat-card class="edit-employee-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>edit</mat-icon>
+        Modifier l'Employé
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="employee">
+        {{ employee.prenom }} {{ employee.nom }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner></mat-spinner>
+        <p>Chargement...</p>
+      </div>
+
+      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="nom" placeholder="Entrez le nom">
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="hasError('nom', 'required')">
+              Le nom est requis
+            </mat-error>
+            <mat-error *ngIf="hasError('nom', 'minlength')">
+              Le nom doit contenir au moins 2 caractères
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Prénom</mat-label>
+            <input matInput formControlName="prenom" placeholder="Entrez le prénom">
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="hasError('prenom', 'required')">
+              Le prénom est requis
+            </mat-error>
+            <mat-error *ngIf="hasError('prenom', 'minlength')">
+              Le prénom doit contenir au moins 2 caractères
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="exemple@email.com">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="hasError('email', 'required')">
+              L'email est requis
+            </mat-error>
+            <mat-error *ngIf="hasError('email', 'email')">
+              Format d'email invalide
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Téléphone</mat-label>
+            <input matInput formControlName="telephone" placeholder="0123456789">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-error *ngIf="hasError('telephone', 'required')">
+              Le téléphone est requis
+            </mat-error>
+            <mat-error *ngIf="hasError('telephone', 'pattern')">
+              Format de téléphone invalide (10 chiffres)
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Nouveau mot de passe (optionnel)</mat-label>
+            <input matInput 
+                   formControlName="password" 
+                   [type]="hidePassword ? 'password' : 'text'"
+                   placeholder="Laissez vide pour ne pas changer">
+            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <div class="checkbox-container">
+            <mat-checkbox formControlName="actif">
+              Employé actif
+            </mat-checkbox>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end" *ngIf="!isLoading">
+      <button mat-button type="button" (click)="onCancel()">
+        <mat-icon>cancel</mat-icon>
+        Annuler
+      </button>
+      <button mat-raised-button 
+              color="primary" 
+              (click)="onSubmit()"
+              [disabled]="!employeeForm.valid || isLoading">
+        <mat-icon>save</mat-icon>
+        <span *ngIf="!isLoading">Sauvegarder</span>
+        <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

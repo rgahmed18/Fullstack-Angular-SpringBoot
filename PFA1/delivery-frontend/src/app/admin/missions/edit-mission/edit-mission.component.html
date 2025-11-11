@@ -1,0 +1,122 @@
+<div class="edit-mission-container">
+  <mat-card class="edit-mission-card">
+    <mat-card-header class="header">
+      <div class="header-left">
+        <button mat-icon-button (click)="goBack()" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <mat-card-title>Modifier la Mission #{{ missionId }}</mat-card-title>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner></mat-spinner>
+        <p>Chargement des données...</p>
+      </div>
+
+      <form [formGroup]="editMissionForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+        <div class="form-row">
+          <app-places-autocomplete
+            formControlName="depart"
+            label="Point de départ"
+            placeholder="Tapez l'adresse de départ..."
+            icon="my_location"
+            (placeSelected)="onDepartSelected($event)">
+          </app-places-autocomplete>
+        </div>
+
+        <div class="form-row">
+          <app-places-autocomplete
+            formControlName="destination"
+            label="Destination"
+            placeholder="Tapez l'adresse de destination..."
+            icon="location_on"
+            (placeSelected)="onDestinationSelected($event)">
+          </app-places-autocomplete>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Date et heure</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dateHeure">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="editMissionForm.get('dateHeure')?.hasError('required')">
+              La date et heure sont requises
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Type de mission</mat-label>
+            <mat-select formControlName="typeMission">
+              <mat-option *ngFor="let type of typeMissions" [value]="type.value">
+                {{ type.label }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="editMissionForm.get('typeMission')?.hasError('required')">
+              Le type de mission est requis
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>État</mat-label>
+            <mat-select formControlName="etat">
+              <mat-option *ngFor="let etat of etats" [value]="etat.value">
+                {{ etat.label }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="editMissionForm.get('etat')?.hasError('required')">
+              L'état est requis
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="third-width">
+            <mat-label>Chauffeur</mat-label>
+            <mat-select formControlName="chauffeurId">
+              <mat-option value="">Aucun chauffeur</mat-option>
+              <mat-option *ngFor="let chauffeur of chauffeurs" [value]="chauffeur.id.toString()">
+                {{ chauffeur.nom }} {{ chauffeur.prenom }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="third-width">
+            <mat-label>Véhicule</mat-label>
+            <mat-select formControlName="vehiculeId">
+              <mat-option value="">Aucun véhicule</mat-option>
+              <mat-option *ngFor="let vehicule of vehicules" [value]="vehicule.id.toString()">
+                {{ vehicule.immatriculation }} - {{ vehicule.marque }} {{ vehicule.modele }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="third-width">
+            <mat-label>Employé</mat-label>
+            <mat-select formControlName="employeId">
+              <mat-option value="">Aucun employé</mat-option>
+              <mat-option *ngFor="let employe of employes" [value]="employe.id.toString()">
+                {{ employe.nom }} {{ employe.prenom }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-button type="button" (click)="onCancel()" class="cancel-button">
+            Annuler
+          </button>
+          <button mat-raised-button color="primary" type="submit" 
+                  [disabled]="editMissionForm.invalid || isLoading" class="submit-button">
+            <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+            {{ isLoading ? 'Enregistrement...' : 'Enregistrer' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

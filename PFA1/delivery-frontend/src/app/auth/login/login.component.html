@@ -1,0 +1,87 @@
+<div class="login-container" [class]="'role-' + role">
+  <!-- Background Elements -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <!-- Back to Home Button -->
+  <button mat-icon-button class="back-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <!-- Login Card -->
+  <div class="login-card-wrapper">
+    <mat-card class="login-card">
+      <!-- Header with Role Icon -->
+      <div class="card-header">
+        <div class="role-icon" [class]="'icon-' + role">
+          <mat-icon>{{getRoleIcon()}}</mat-icon>
+        </div>
+        <h1 class="role-title">{{roleTitle}}</h1>
+        <p class="role-subtitle">{{roleSubtitle}}</p>
+      </div>
+
+      <!-- Login Form -->
+      <mat-card-content class="card-content">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+          <div class="form-fields">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Adresse email</mat-label>
+              <input matInput formControlName="email" type="email" required placeholder="exemple@email.com">
+              <mat-icon matSuffix>email</mat-icon>
+              <mat-error *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                Veuillez entrer un email valide
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Mot de passe</mat-label>
+              <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
+              <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                Veuillez entrer votre mot de passe
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Messages -->
+          <div class="messages">
+            <div class="error-message" *ngIf="error">
+              <mat-icon>error</mat-icon>
+              <span>{{error}}</span>
+            </div>
+            <div class="success-message" *ngIf="success">
+              <mat-icon>check_circle</mat-icon>
+              <span>{{success}}</span>
+            </div>
+          </div>
+
+          <!-- Login Button -->
+          <button 
+            mat-raised-button 
+            [color]="getRoleColor()" 
+            type="submit" 
+            class="login-button"
+            [disabled]="loginForm.invalid || loading"
+            [class.loading]="loading">
+            <span *ngIf="!loading" class="button-content">
+              <mat-icon>login</mat-icon>
+              Se connecter
+            </span>
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+          </button>
+        </form>
+      </mat-card-content>
+
+      <!-- Footer -->
+      <div class="card-footer">
+        <p>Système de Gestion des Missions</p>
+        <small>&copy; 2025 - Accès sécurisé</small>
+      </div>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,547 @@
+.mission-details-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 20px;
+
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    color: #334155;
+
+    .back-button {
+      background: #ffffff;
+      color: #64748b;
+      margin-right: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e2e8f0;
+
+      &:hover {
+        background: #f8fafc;
+        color: #475569;
+      }
+    }
+
+    .header-content {
+      .page-title {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .page-subtitle {
+        margin: 5px 0 0 0;
+        color: #64748b;
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  .loading-container, .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    color: #64748b;
+    text-align: center;
+
+    .error-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: #dc2626;
+    }
+
+    h2 {
+      margin: 20px 0 10px 0;
+      font-size: 1.5rem;
+      color: #334155;
+    }
+
+    p {
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+      color: #64748b;
+    }
+  }
+
+  .mission-content {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .mat-mdc-card {
+      margin-bottom: 24px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+    }
+
+    // Mission Header Card
+    .mission-header-card {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      color: white;
+      border: none;
+
+      .mission-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .mission-id {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+
+          .mission-icon {
+            font-size: 3rem;
+            opacity: 0.9;
+          }
+
+          .mission-title {
+            h2 {
+              margin: 0 0 10px 0;
+              font-size: 1.8rem;
+              font-weight: 600;
+            }
+
+            .mat-mdc-chip {
+              background: rgba(255, 255, 255, 0.15);
+              color: white;
+              border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+          }
+        }
+
+        .mission-type {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 12px 20px;
+          border-radius: 8px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+
+          mat-icon {
+            font-size: 1.5rem;
+          }
+
+          span {
+            font-weight: 500;
+            font-size: 1.1rem;
+          }
+        }
+      }
+    }
+
+    // Route Card
+    .route-card {
+      .mat-mdc-card-header {
+        background: #f1f5f9;
+        margin: -24px -24px 20px -24px;
+        padding: 20px 24px;
+        border-radius: 12px 12px 0 0;
+        border-bottom: 1px solid #e2e8f0;
+
+        .mat-mdc-card-title {
+          color: #1e293b;
+          font-weight: 600;
+        }
+
+        .mat-mdc-card-subtitle {
+          color: #64748b;
+        }
+
+        .mat-icon {
+          background: #3b82f6;
+          color: white;
+          padding: 8px;
+          border-radius: 8px;
+        }
+      }
+
+      .route-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        margin-top: 20px;
+
+        .route-point {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          background: #f8fafc;
+          padding: 25px;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+
+          .route-icon {
+            background: #3b82f6;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            mat-icon {
+              font-size: 2rem;
+              color: white;
+            }
+          }
+
+          .route-info {
+            flex: 1;
+
+            h3 {
+              margin: 0 0 8px 0;
+              font-size: 1.2rem;
+              font-weight: 600;
+              color: #1e293b;
+            }
+
+            p {
+              margin: 0 0 15px 0;
+              font-size: 1rem;
+              color: #64748b;
+              line-height: 1.4;
+            }
+
+            button {
+              background: transparent;
+              color: #3b82f6;
+              border: 1px solid #3b82f6;
+
+              &:hover {
+                background: #3b82f6;
+                color: white;
+              }
+            }
+          }
+        }
+
+        .route-arrow {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .bouncing-arrow {
+            font-size: 2.5rem;
+            color: #64748b;
+            animation: bounce 2s infinite;
+          }
+        }
+      }
+    }
+
+    // DateTime Card
+    .datetime-card {
+      .mat-mdc-card-header {
+        background: #f1f5f9;
+        margin: -24px -24px 20px -24px;
+        padding: 20px 24px;
+        border-radius: 12px 12px 0 0;
+        border-bottom: 1px solid #e2e8f0;
+
+        .mat-mdc-card-title {
+          color: #1e293b;
+          font-weight: 600;
+        }
+
+        .mat-mdc-card-subtitle {
+          color: #64748b;
+        }
+
+        .mat-icon {
+          background: #10b981;
+          color: white;
+          padding: 8px;
+          border-radius: 8px;
+        }
+      }
+
+      .datetime-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin-top: 20px;
+
+        .date-section, .time-section {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+
+          mat-icon {
+            font-size: 2.5rem;
+            color: #10b981;
+          }
+
+          h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+          }
+
+          p {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #64748b;
+          }
+        }
+
+        .mat-divider-vertical {
+          height: 60px;
+          border-left-color: #e2e8f0;
+        }
+      }
+    }
+
+    // Instructions Card
+    .instructions-card {
+      .mat-mdc-card-header {
+        background: #f1f5f9;
+        margin: -24px -24px 20px -24px;
+        padding: 20px 24px;
+        border-radius: 12px 12px 0 0;
+        border-bottom: 1px solid #e2e8f0;
+
+        .mat-mdc-card-title {
+          color: #1e293b;
+          font-weight: 600;
+        }
+
+        .mat-mdc-card-subtitle {
+          color: #64748b;
+        }
+
+        .mat-icon {
+          background: #f59e0b;
+          color: white;
+          padding: 8px;
+          border-radius: 8px;
+        }
+      }
+
+      .instructions-content {
+        margin-top: 15px;
+
+        p {
+          font-size: 1.1rem;
+          line-height: 1.6;
+          color: #374151;
+          background: #fef3c7;
+          padding: 20px;
+          border-radius: 8px;
+          border-left: 4px solid #f59e0b;
+          margin: 0;
+        }
+      }
+    }
+
+    // Problem Card
+    .problem-card {
+      border-left: 4px solid #dc2626;
+
+      .mat-mdc-card-header {
+        background: #fef2f2;
+        margin: -24px -24px 20px -24px;
+        padding: 20px 24px;
+        border-radius: 12px 12px 0 0;
+        border-bottom: 1px solid #fecaca;
+
+        .mat-mdc-card-title {
+          color: #991b1b;
+          font-weight: 600;
+        }
+
+        .mat-mdc-card-subtitle {
+          color: #b91c1c;
+        }
+
+        .warning-icon {
+          background: #dc2626;
+          color: white;
+          padding: 8px;
+          border-radius: 8px;
+        }
+      }
+
+      .problem-content {
+        margin-top: 15px;
+
+        p {
+          font-size: 1.1rem;
+          line-height: 1.6;
+          color: #991b1b;
+          background: #fee2e2;
+          padding: 20px;
+          border-radius: 8px;
+          border-left: 4px solid #dc2626;
+          margin: 0;
+        }
+      }
+    }
+
+    // Action Buttons
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+      padding: 20px;
+
+      .action-btn {
+        min-width: 200px;
+        height: 48px;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+
+        &.start-btn {
+          background: #3b82f6;
+          color: white;
+          border: none;
+
+          &:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+          }
+        }
+
+        &.complete-btn {
+          background: #10b981;
+          color: white;
+          border: none;
+
+          &:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+          }
+        }
+
+        &.refuse-btn, &.problem-btn {
+          background: #dc2626;
+          color: white;
+          border: none;
+
+          &:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+          }
+        }
+
+        &.back-btn {
+          background: #ffffff;
+          color: #64748b;
+          border: 2px solid #e2e8f0;
+
+          &:hover {
+            background: #f8fafc;
+            color: #475569;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+          }
+        }
+
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(-8px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .mission-details-container {
+    padding: 15px;
+
+    .header {
+      .header-content {
+        .page-title {
+          font-size: 1.5rem;
+        }
+
+        .page-subtitle {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .mission-content {
+      .route-card .route-container {
+        flex-direction: column;
+        gap: 20px;
+
+        .route-arrow {
+          transform: rotate(90deg);
+        }
+
+        .route-point {
+          width: 100%;
+        }
+      }
+
+      .datetime-card .datetime-info {
+        flex-direction: column;
+        gap: 20px;
+
+        .mat-divider-vertical {
+          display: none;
+        }
+      }
+
+      .action-buttons {
+        .action-btn {
+          min-width: 100%;
+        }
+      }
+    }
+  }
+}
+
+// Status-specific chip colors
+.mat-mdc-chip {
+  &[color="warn"] {
+    background-color: #fbbf24 !important;
+    color: #92400e !important;
+  }
+  
+  &[color="primary"] {
+    background-color: #3b82f6 !important;
+    color: white !important;
+  }
+  
+  &[color="accent"] {
+    background-color: #10b981 !important;
+    color: white !important;
+  }
+}

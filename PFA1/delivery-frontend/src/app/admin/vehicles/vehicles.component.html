@@ -1,0 +1,145 @@
+<div class="vehicles-container">
+  <div class="header-section">
+    <div class="header-left">
+      <button mat-icon-button (click)="goBack()" class="back-btn" matTooltip="Retour au tableau de bord">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="title-section">
+        <h1>
+          <mat-icon>directions_car</mat-icon>
+          Gestion des Véhicules
+        </h1>
+        <p>Gérez la flotte de véhicules de votre entreprise</p>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="addVehicle()" class="add-btn">
+      <mat-icon>add</mat-icon>
+      Ajouter un Véhicule
+    </button>
+  </div>
+
+  <mat-card class="vehicles-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>list</mat-icon>
+        Liste des Véhicules
+      </mat-card-title>
+      <mat-card-subtitle>{{ vehicles.length }} véhicule(s) enregistré(s)</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="table-container" *ngIf="!loading">
+        <table mat-table [dataSource]="vehicles" class="vehicles-table">
+          <!-- Immatriculation Column -->
+          <ng-container matColumnDef="immatriculation">
+            <th mat-header-cell *matHeaderCellDef>Immatriculation</th>
+            <td mat-cell *matCellDef="let vehicle">
+              <div class="immatriculation-cell">
+                <mat-icon>confirmation_number</mat-icon>
+                <span class="immat-text">{{ vehicle.immatriculation }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Marque Column -->
+          <ng-container matColumnDef="marque">
+            <th mat-header-cell *matHeaderCellDef>Marque</th>
+            <td mat-cell *matCellDef="let vehicle">{{ vehicle.marque }}</td>
+          </ng-container>
+
+          <!-- Modèle Column -->
+          <ng-container matColumnDef="modele">
+            <th mat-header-cell *matHeaderCellDef>Modèle</th>
+            <td mat-cell *matCellDef="let vehicle">{{ vehicle.modele }}</td>
+          </ng-container>
+
+          <!-- Capacité Column -->
+          <ng-container matColumnDef="capacite">
+            <th mat-header-cell *matHeaderCellDef>Capacité</th>
+            <td mat-cell *matCellDef="let vehicle">
+              <div class="capacity-cell">
+                <mat-icon>scale</mat-icon>
+                {{ vehicle.capacite }} kg
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Disponibilité Column -->
+          <ng-container matColumnDef="disponible">
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let vehicle">
+              <mat-chip-set>
+                <mat-chip [class]="vehicle.disponible ? 'status-available' : 'status-unavailable'">
+                  <mat-icon>{{ vehicle.disponible ? 'check_circle' : 'cancel' }}</mat-icon>
+                  {{ vehicle.disponible ? 'Disponible' : 'Indisponible' }}
+                </mat-chip>
+              </mat-chip-set>
+            </td>
+          </ng-container>
+
+          <!-- Chauffeur Column -->
+          <ng-container matColumnDef="chauffeur">
+            <th mat-header-cell *matHeaderCellDef>Chauffeur Assigné</th>
+            <td mat-cell *matCellDef="let vehicle">
+              <div class="chauffeur-cell">
+                <mat-icon>person</mat-icon>
+                <div class="chauffeur-info">
+                  <span [class]="vehicle.chauffeur ? 'assigned' : 'unassigned'">
+                    {{ getChauffeurName(vehicle) }}
+                  </span>
+                  <mat-chip-set>
+                    <mat-chip [color]="getStatusColor(vehicle)" selected>
+                      <mat-icon>{{ vehicle.isInActiveMission ? 'directions_car' : (vehicle.chauffeur ? 'check_circle' : 'person_off') }}</mat-icon>
+                      {{ getChauffeurStatus(vehicle) }}
+                    </mat-chip>
+                  </mat-chip-set>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let vehicle">
+              <div class="actions-cell">
+                <button mat-icon-button 
+                        color="primary" 
+                        (click)="editVehicle(vehicle)"
+                        matTooltip="Modifier le véhicule">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button 
+                        color="warn" 
+                        (click)="deleteVehicle(vehicle)"
+                        matTooltip="Supprimer le véhicule">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="vehicle-row"></tr>
+        </table>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="loading-container">
+        <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+        <p>Chargement des véhicules...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!loading && vehicles.length === 0" class="empty-state">
+        <mat-icon>directions_car_filled</mat-icon>
+        <h3>Aucun véhicule enregistré</h3>
+        <p>Commencez par ajouter votre premier véhicule à la flotte</p>
+        <button mat-raised-button color="primary" (click)="addVehicle()">
+          <mat-icon>add</mat-icon>
+          Ajouter un Véhicule
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

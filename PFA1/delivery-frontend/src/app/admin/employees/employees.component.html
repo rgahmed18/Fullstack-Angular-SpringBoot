@@ -1,0 +1,151 @@
+<div class="employees-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <button mat-icon-button (click)="goBack()" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="header-text">
+        <h1>Gestion des Employés</h1>
+        <p>Liste complète des employés avec leurs missions assignées</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <button mat-raised-button color="primary" (click)="router.navigate(['/admin/add-employee'])" class="add-btn">
+        <mat-icon>person_add</mat-icon>
+        Ajouter Employé
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Chargement des employés...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-icon class="error-icon">error</mat-icon>
+    <h3>Erreur de chargement</h3>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadEmployees()">
+      <mat-icon>refresh</mat-icon>
+      Réessayer
+    </button>
+  </div>
+
+  <!-- Employees Grid -->
+  <div *ngIf="!loading && !error" class="employees-grid">
+    <!-- Empty State -->
+    <div *ngIf="employees.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">people_outline</mat-icon>
+      <h3>Aucun employé trouvé</h3>
+      <p>Commencez par ajouter votre premier employé au système</p>
+      <button mat-raised-button color="primary" (click)="router.navigate(['/admin/add-employee'])">
+        <mat-icon>person_add</mat-icon>
+        Ajouter un employé
+      </button>
+    </div>
+
+    <!-- Employee Cards -->
+    <mat-card *ngFor="let employee of employees" class="employee-card">
+      <mat-card-header>
+        <div mat-card-avatar class="employee-avatar">
+          <mat-icon [class]="getStatusColor(employee)">{{ getStatusIcon(employee) }}</mat-icon>
+        </div>
+        <mat-card-title>{{ employee.prenom }} {{ employee.nom }}</mat-card-title>
+        <mat-card-subtitle>{{ employee.email }}</mat-card-subtitle>
+        
+        <!-- Status Badge -->
+        <div class="status-badge">
+          <mat-chip [color]="getStatusColor(employee)" selected>
+            <mat-icon>{{ getStatusIcon(employee) }}</mat-icon>
+            {{ getStatusText(employee) }}
+          </mat-chip>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Contact Information -->
+        <div class="employee-info">
+          <div class="info-item">
+            <mat-icon class="info-icon">phone</mat-icon>
+            <span>{{ employee.telephone }}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon class="info-icon">calendar_today</mat-icon>
+            <span>Embauché le {{ formatDate(employee.dateEmbauche) }}</span>
+          </div>
+        </div>
+
+        <!-- Mission Statistics -->
+        <div class="mission-stats">
+          <h4>Missions</h4>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number">{{ employee.totalMissions || 0 }}</div>
+              <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-item active">
+              <div class="stat-number">{{ employee.activeMissions || 0 }}</div>
+              <div class="stat-label">Actives</div>
+            </div>
+            <div class="stat-item completed">
+              <div class="stat-number">{{ employee.completedMissions || 0 }}</div>
+              <div class="stat-label">Terminées</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Missions Preview -->
+        <div *ngIf="employee.missions && employee.missions.length > 0" class="recent-missions">
+          <h4>Missions récentes</h4>
+          <div class="mission-list">
+            <div *ngFor="let mission of employee.missions.slice(0, 3)" class="mission-item">
+              <div class="mission-info">
+                <span class="mission-id">#{{ mission.id }}</span>
+                <span class="mission-route">{{ mission.depart }} → {{ mission.destination }}</span>
+              </div>
+              <mat-chip class="mission-status" [color]="mission.etat === 'TERMINEE' ? 'accent' : 'primary'" selected>
+                {{ mission.etat }}
+              </mat-chip>
+            </div>
+          </div>
+          <button *ngIf="employee.missions.length > 3" 
+                  mat-button 
+                  color="primary" 
+                  (click)="viewEmployeeMissions(employee)"
+                  class="view-all-btn">
+            Voir toutes les missions ({{ employee.missions.length }})
+          </button>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="viewEmployeeMissions(employee)" matTooltip="Voir les missions">
+          <mat-icon>assignment</mat-icon>
+          Missions
+          <mat-badge *ngIf="employee.activeMissions && employee.activeMissions > 0" 
+                     [matBadge]="employee.activeMissions" 
+                     matBadgeColor="warn" 
+                     matBadgeSize="small">
+          </mat-badge>
+        </button>
+        
+        <button mat-button color="accent" (click)="editEmployee(employee)" matTooltip="Modifier l'employé">
+          <mat-icon>edit</mat-icon>
+          Modifier
+        </button>
+        
+        <button mat-button 
+                color="warn" 
+                (click)="deleteEmployee(employee)" 
+                matTooltip="Supprimer l'employé">
+          <mat-icon>delete</mat-icon>
+          Supprimer
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

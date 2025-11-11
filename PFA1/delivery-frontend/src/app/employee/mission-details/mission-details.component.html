@@ -1,0 +1,207 @@
+<div class="mission-details-container">
+  <!-- Header -->
+  <div class="header">
+    <button mat-icon-button (click)="goBack()" class="back-button" matTooltip="Retour au tableau de bord">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="page-title">
+      <mat-icon class="title-icon">assignment</mat-icon>
+      Détails de la Mission
+    </h1>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Chargement des détails...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    <h2>Oops!</h2>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadMissionDetails()">
+      <mat-icon>refresh</mat-icon>
+      Réessayer
+    </button>
+  </div>
+
+  <!-- Mission Details -->
+  <div *ngIf="mission && !loading" class="mission-content">
+    
+    <!-- Mission Header Card -->
+    <mat-card class="mission-header-card">
+      <mat-card-content>
+        <div class="mission-header">
+          <div class="mission-info">
+            <h2 class="mission-title">Mission #{{ mission.id }}</h2>
+            <p class="mission-type">{{ mission.typeMission }}</p>
+          </div>
+          <div class="status-badge">
+            <mat-chip [color]="getStatusColor(mission.etat)" selected>
+              <mat-icon matChipAvatar>{{ getStatusIcon(mission.etat) }}</mat-icon>
+              {{ getStatusText(mission.etat) }}
+            </mat-chip>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Route Information -->
+    <mat-card class="route-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="route-icon">route</mat-icon>
+        <mat-card-title>Itinéraire</mat-card-title>
+        <mat-card-subtitle>Détails du trajet</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="route-container">
+          <!-- Departure -->
+          <div class="location-item departure">
+            <div class="location-icon">
+              <mat-icon>my_location</mat-icon>
+            </div>
+            <div class="location-details">
+              <h3>Point de Départ</h3>
+              <p>{{ mission.depart }}</p>
+              <button mat-stroked-button (click)="openMap(mission.depart)" class="map-button">
+                <mat-icon>map</mat-icon>
+                Voir sur la carte
+              </button>
+            </div>
+          </div>
+
+          <!-- Route Line -->
+          <div class="route-line">
+            <div class="line"></div>
+            <mat-icon class="route-arrow">keyboard_arrow_down</mat-icon>
+          </div>
+
+          <!-- Destination -->
+          <div class="location-item destination">
+            <div class="location-icon">
+              <mat-icon>place</mat-icon>
+            </div>
+            <div class="location-details">
+              <h3>Destination</h3>
+              <p>{{ mission.destination }}</p>
+              <button mat-stroked-button (click)="openMap(mission.destination)" class="map-button">
+                <mat-icon>map</mat-icon>
+                Voir sur la carte
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Schedule Card -->
+    <mat-card class="schedule-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="schedule-icon">schedule</mat-icon>
+        <mat-card-title>Planification</mat-card-title>
+        <mat-card-subtitle>Date et heure prévues</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="schedule-info">
+          <div class="date-info">
+            <mat-icon>calendar_today</mat-icon>
+            <div>
+              <h3>Date</h3>
+              <p>{{ formatDate(mission.dateHeure) }}</p>
+            </div>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="time-info">
+            <mat-icon>access_time</mat-icon>
+            <div>
+              <h3>Heure</h3>
+              <p>{{ formatTime(mission.dateHeure) }}</p>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Team Information -->
+    <div class="team-cards">
+      <!-- Chauffeur Card -->
+      <mat-card class="team-card chauffeur-card" *ngIf="mission.chauffeurNom">
+        <mat-card-header>
+          <mat-icon mat-card-avatar class="chauffeur-icon">drive_eta</mat-icon>
+          <mat-card-title>Chauffeur</mat-card-title>
+          <mat-card-subtitle>Conducteur assigné</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="team-member-info">
+            <h3>{{ mission.chauffeurNom }} {{ mission.chauffeurPrenom }}</h3>
+            <p class="contact-info">
+              <mat-icon>phone</mat-icon>
+              {{ mission.chauffeurTelephone }}
+            </p>
+            <button mat-raised-button color="primary" (click)="callChauffeur(mission.chauffeurTelephone)" class="contact-button">
+              <mat-icon>call</mat-icon>
+              Appeler
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Vehicle Card -->
+      <mat-card class="team-card vehicle-card" *ngIf="mission.vehiculeImmatriculation">
+        <mat-card-header>
+          <mat-icon mat-card-avatar class="vehicle-icon">directions_car</mat-icon>
+          <mat-card-title>Véhicule</mat-card-title>
+          <mat-card-subtitle>Véhicule assigné</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="vehicle-info">
+            <h3>{{ mission.vehiculeMarque }} {{ mission.vehiculeModele }}</h3>
+            <p class="vehicle-plate">
+              <mat-icon>confirmation_number</mat-icon>
+              {{ mission.vehiculeImmatriculation }}
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Instructions Card -->
+    <mat-card class="instructions-card" *ngIf="mission.instructions">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="instructions-icon">description</mat-icon>
+        <mat-card-title>Instructions</mat-card-title>
+        <mat-card-subtitle>Détails supplémentaires</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="instructions-content">
+          <p>{{ mission.instructions }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Problem Card (if any) -->
+    <mat-card class="problem-card" *ngIf="mission.probleme">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="problem-icon">warning</mat-icon>
+        <mat-card-title>Problème Signalé</mat-card-title>
+        <mat-card-subtitle>Attention requise</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="problem-content">
+          <p>{{ mission.probleme }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button mat-raised-button color="primary" (click)="goBack()" class="action-button">
+        <mat-icon>dashboard</mat-icon>
+        Retour au Tableau de Bord
+      </button>
+    </div>
+
+  </div>
+</div>

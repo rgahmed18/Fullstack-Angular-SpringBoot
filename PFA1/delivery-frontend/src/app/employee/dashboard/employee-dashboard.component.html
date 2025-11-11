@@ -1,0 +1,162 @@
+<div class="dashboard-content">
+      <!-- Modern Dashboard View -->
+      <div class="modern-dashboard">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+          <div class="welcome-content">
+            <h1 class="welcome-title">Bonjour, {{employeeName}} 👋</h1>
+            <p class="welcome-subtitle">Voici un aperçu de votre activité aujourd'hui</p>
+          </div>
+          <div class="date-info">
+            <div class="current-date">
+              <mat-icon>today</mat-icon>
+              <span>{{getCurrentDate()}}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card total-missions">
+            <div class="stat-header">
+              <div class="stat-icon">
+                <mat-icon>assignment</mat-icon>
+              </div>
+              <div class="stat-trend">
+                <mat-icon class="trend-up">trending_up</mat-icon>
+              </div>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{stats.totalMissions}}</h3>
+              <p class="stat-label">Total Missions</p>
+              <div class="stat-description">Toutes vos missions</div>
+            </div>
+          </div>
+          
+          <div class="stat-card active-missions">
+            <div class="stat-header">
+              <div class="stat-icon">
+                <mat-icon>hourglass_empty</mat-icon>
+              </div>
+              <div class="stat-trend">
+                <mat-icon class="trend-stable">trending_flat</mat-icon>
+              </div>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{stats.activeMissions}}</h3>
+              <p class="stat-label">En Cours</p>
+              <div class="stat-description">Missions actives</div>
+            </div>
+          </div>
+          
+          <div class="stat-card pending-missions">
+            <div class="stat-header">
+              <div class="stat-icon">
+                <mat-icon>schedule</mat-icon>
+              </div>
+              <div class="stat-trend">
+                <mat-icon class="trend-up">trending_up</mat-icon>
+              </div>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{stats.pendingMissions}}</h3>
+              <p class="stat-label">En Attente</p>
+              <div class="stat-description">À traiter</div>
+            </div>
+          </div>
+          
+          <div class="stat-card completed-missions">
+            <div class="stat-header">
+              <div class="stat-icon">
+                <mat-icon>check_circle</mat-icon>
+              </div>
+              <div class="stat-trend">
+                <mat-icon class="trend-up">trending_up</mat-icon>
+              </div>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{stats.completedMissions}}</h3>
+              <p class="stat-label">Terminées</p>
+              <div class="stat-description">Missions accomplies</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Missions Needing Reassignment -->
+        <div class="reassignment-section" *ngIf="missionsWithProblems && missionsWithProblems.length > 0">
+          <h2 class="section-title">
+            <mat-icon class="section-icon">assignment_late</mat-icon>
+            Missions Nécessitant une Réassignation
+          </h2>
+          <div class="reassignment-cards">
+            <div class="reassignment-card" *ngFor="let mission of missionsWithProblems">
+              <div class="mission-header">
+                <div class="mission-info">
+                  <h3>Mission #{{mission.id}}</h3>
+                  <div class="mission-route">
+                    <mat-icon class="route-icon">my_location</mat-icon>
+                    <span>{{mission.depart}}</span>
+                    <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+                    <mat-icon class="route-icon">place</mat-icon>
+                    <span>{{mission.destination}}</span>
+                  </div>
+                </div>
+                <div class="mission-status">
+                  <mat-chip class="status-chip problem">
+                    <mat-icon>report_problem</mat-icon>
+                    Problème Signalé
+                  </mat-chip>
+                </div>
+              </div>
+              
+              <div class="problem-details" *ngIf="mission.probleme">
+                <div class="problem-header">
+                  <mat-icon class="problem-icon">warning</mat-icon>
+                  <strong>Problème:</strong>
+                </div>
+                <p class="problem-text">{{mission.probleme}}</p>
+              </div>
+              
+              <div class="mission-details">
+                <div class="detail-item">
+                  <mat-icon>category</mat-icon>
+                  <span>{{mission.typeMission}}</span>
+                </div>
+                <div class="detail-item">
+                  <mat-icon>schedule</mat-icon>
+                  <span>{{formatDate(mission.dateHeure)}}</span>
+                </div>
+              </div>
+              
+              <div class="card-actions">
+                <button mat-button color="primary" (click)="viewMissionDetails(mission.id)">
+                  <mat-icon>visibility</mat-icon>
+                  Voir Détails
+                </button>
+                <button mat-raised-button color="accent" (click)="openReassignDialog(mission)">
+                  <mat-icon>assignment_ind</mat-icon>
+                  Réassigner
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions Section -->
+        <div class="quick-actions-section">
+          <h2 class="section-title">Actions Rapides</h2>
+          <div class="actions-grid">
+            <div class="action-card primary" (click)="createNewMission()">
+              <div class="action-icon">
+                <mat-icon>add_task</mat-icon>
+              </div>
+              <div class="action-content">
+                <h3>Nouvelle Mission</h3>
+                <p>Créer une demande</p>
+              </div>
+              <mat-icon class="action-arrow">arrow_forward</mat-icon>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

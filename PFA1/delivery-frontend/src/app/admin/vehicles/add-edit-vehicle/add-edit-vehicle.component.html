@@ -1,0 +1,106 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>
+      <mat-icon>{{ isEdit ? 'edit' : 'add' }}</mat-icon>
+      {{ isEdit ? 'Modifier le Véhicule' : 'Ajouter un Véhicule' }}
+    </h2>
+    <button mat-icon-button mat-dialog-close class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <!-- Immatriculation -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Immatriculation</mat-label>
+          <input matInput 
+                 formControlName="immatriculation" 
+                 placeholder="Ex: 123-A-45"
+                 maxlength="20">
+          <mat-icon matPrefix>confirmation_number</mat-icon>
+          <mat-error *ngIf="vehicleForm.get('immatriculation')?.touched && vehicleForm.get('immatriculation')?.errors">
+            {{ getErrorMessage('Immatriculation') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Marque -->
+        <mat-form-field appearance="outline">
+          <mat-label>Marque</mat-label>
+          <input matInput 
+                 formControlName="marque" 
+                 placeholder="Ex: Mercedes, Renault"
+                 maxlength="50">
+          <mat-icon matPrefix>business</mat-icon>
+          <mat-error *ngIf="vehicleForm.get('marque')?.touched && vehicleForm.get('marque')?.errors">
+            {{ getErrorMessage('Marque') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Modèle -->
+        <mat-form-field appearance="outline">
+          <mat-label>Modèle</mat-label>
+          <input matInput 
+                 formControlName="modele" 
+                 placeholder="Ex: Sprinter, Master"
+                 maxlength="50">
+          <mat-icon matPrefix>directions_car</mat-icon>
+          <mat-error *ngIf="vehicleForm.get('modele')?.touched && vehicleForm.get('modele')?.errors">
+            {{ getErrorMessage('Modèle') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Capacité -->
+        <mat-form-field appearance="outline">
+          <mat-label>Capacité (kg)</mat-label>
+          <input matInput 
+                 type="number" 
+                 formControlName="capacite" 
+                 placeholder="Ex: 3500"
+                 min="1"
+                 max="50000">
+          <mat-icon matPrefix>scale</mat-icon>
+          <mat-error *ngIf="vehicleForm.get('capacite')?.touched && vehicleForm.get('capacite')?.errors">
+            {{ getErrorMessage('Capacité') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Disponibilité -->
+      <div class="availability-section">
+        <mat-slide-toggle formControlName="disponible" class="availability-toggle">
+          <span class="toggle-label">
+            <mat-icon>{{ vehicleForm.get('disponible')?.value ? 'check_circle' : 'cancel' }}</mat-icon>
+            Véhicule {{ vehicleForm.get('disponible')?.value ? 'disponible' : 'indisponible' }}
+          </span>
+        </mat-slide-toggle>
+        <p class="availability-help">
+          Un véhicule indisponible ne peut pas être assigné à de nouvelles missions
+        </p>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-button 
+            type="button" 
+            (click)="onCancel()" 
+            class="cancel-btn"
+            [disabled]="loading">
+      <mat-icon>cancel</mat-icon>
+      Annuler
+    </button>
+    
+    <button mat-raised-button 
+            color="primary" 
+            type="submit" 
+            (click)="onSubmit()"
+            class="save-btn"
+            [disabled]="loading || vehicleForm.invalid">
+      <mat-icon *ngIf="!loading">{{ isEdit ? 'save' : 'add' }}</mat-icon>
+      <mat-icon *ngIf="loading" class="loading-icon">hourglass_empty</mat-icon>
+      {{ loading ? 'Sauvegarde...' : (isEdit ? 'Modifier' : 'Ajouter') }}
+    </button>
+  </mat-dialog-actions>
+</div>

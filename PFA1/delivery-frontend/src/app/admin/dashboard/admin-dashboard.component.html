@@ -1,0 +1,221 @@
+<div class="dashboard-container">
+  <!-- Modern Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <mat-icon class="logo-icon">local_shipping</mat-icon>
+        <div class="logo-text">
+          <h2>CDG</h2>
+          <p>Gestion des Missions</p>
+        </div>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <h3 class="nav-title">GESTION</h3>
+        <a *ngFor="let item of menuItems" 
+           class="nav-item" 
+           [routerLink]="item.route"
+           routerLinkActive="active">
+          <mat-icon>{{item.icon}}</mat-icon>
+          <span>{{item.label}}</span>
+        </a>
+      </div>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <button mat-button class="logout-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Déconnexion</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-content">
+        <div class="header-left">
+          <h1 class="header-title">Tableau de Bord</h1>
+          <p class="header-subtitle">Bienvenue dans votre panneau d'administration</p>
+        </div>
+        <div class="header-right">
+          <app-admin-notification-center></app-admin-notification-center>
+          <div class="user-profile">
+            <mat-icon>account_circle</mat-icon>
+            <span>{{ currentUser.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      <!-- Stats Cards -->
+      <div class="stats-grid" *ngIf="!loading">
+        <div class="stat-card missions">
+          <div class="stat-icon">
+            <mat-icon>assignment</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>Missions</h3>
+            <p class="stat-number">{{ stats.missions }}</p>
+            <span class="stat-change info">{{ stats.activeMissions }} actives</span>
+          </div>
+        </div>
+        
+        <div class="stat-card chauffeurs">
+          <div class="stat-icon">
+            <mat-icon>people</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>Chauffeurs</h3>
+            <p class="stat-number">{{ stats.chauffeurs }}</p>
+            <span class="stat-change neutral">Enregistrés</span>
+          </div>
+        </div>
+        
+        <div class="stat-card vehicules">
+          <div class="stat-icon">
+            <mat-icon>local_shipping</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>Véhicules</h3>
+            <p class="stat-number">{{ stats.vehicules }}</p>
+            <span class="stat-change positive">{{ stats.availableVehicules }} disponibles</span>
+          </div>
+        </div>
+        
+        <div class="stat-card employes">
+          <div class="stat-icon">
+            <mat-icon>badge</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>Employés</h3>
+            <p class="stat-number">{{ stats.employes }}</p>
+            <span class="stat-change neutral">Actifs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading-container" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+        <p>Chargement des données...</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="error-container" *ngIf="error">
+        <mat-icon>error</mat-icon>
+        <p>{{ error }}</p>
+        <button mat-raised-button color="primary" (click)="refreshData()">
+          <mat-icon>refresh</mat-icon>
+          Réessayer
+        </button>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <h2 class="section-title">Actions Rapides</h2>
+        <div class="actions-grid">
+          <div class="action-card" routerLink="/admin/add-chauffeur">
+            <div class="action-icon chauffeur">
+              <mat-icon>person_add</mat-icon>
+            </div>
+            <div class="action-content">
+              <h3>Ajouter Chauffeur</h3>
+              <p>Créer un nouveau profil chauffeur</p>
+            </div>
+            <mat-icon class="action-arrow">arrow_forward</mat-icon>
+          </div>
+          
+          <div class="action-card" routerLink="/admin/add-employee">
+            <div class="action-icon employee">
+              <mat-icon>badge</mat-icon>
+            </div>
+            <div class="action-content">
+              <h3>Ajouter Employé</h3>
+              <p>Créer un nouveau profil employé</p>
+            </div>
+            <mat-icon class="action-arrow">arrow_forward</mat-icon>
+          </div>
+          
+          <div class="action-card" routerLink="/admin/add-vehicule">
+            <div class="action-icon vehicule">
+              <mat-icon>add_circle</mat-icon>
+            </div>
+            <div class="action-content">
+              <h3>Ajouter Véhicule</h3>
+              <p>Enregistrer un nouveau véhicule</p>
+            </div>
+            <mat-icon class="action-arrow">arrow_forward</mat-icon>
+          </div>
+          
+          <div class="action-card" routerLink="/admin/dashboard/create-mission">
+            <div class="action-icon mission">
+              <mat-icon>assignment_add</mat-icon>
+            </div>
+            <div class="action-content">
+              <h3>Ajouter Mission</h3>
+              <p>Créer une nouvelle mission</p>
+            </div>
+            <mat-icon class="action-arrow">arrow_forward</mat-icon>
+          </div>
+          
+        </div>
+      </div>
+
+
+
+      <!-- Recent Activity -->
+      <div class="recent-activity" *ngIf="!loading">
+        <h2 class="section-title">Activité Récente - Missions</h2>
+        
+        <div class="activity-list" *ngIf="recentActivity.length > 0; else noActivity">
+          <div class="activity-item" *ngFor="let activity of recentActivity; let i = index">
+            <div class="activity-icon" [ngClass]="activity.status">
+              <mat-icon>{{ getActivityIcon(activity.type) }}</mat-icon>
+            </div>
+            <div class="activity-content">
+              <div class="activity-header">
+                <h4>{{ activity.title }}</h4>
+                <mat-chip class="status-chip" [ngClass]="activity.status">
+                  <mat-icon>{{ getStatusIcon(activity.status) }}</mat-icon>
+                  {{ getStatusText(activity.status) }}
+                </mat-chip>
+              </div>
+              <p class="activity-description">{{ activity.description }}</p>
+              <div class="activity-details" *ngIf="recentMissions[i]">
+                <span class="mission-type">
+                  <mat-icon>category</mat-icon>
+                  {{ recentMissions[i].typeMission }}
+                </span>
+                <span class="mission-employee" *ngIf="recentMissions[i].employe">
+                  <mat-icon>person</mat-icon>
+                  {{ recentMissions[i].employe!.prenom }} {{ recentMissions[i].employe!.nom }}
+                </span>
+                <span class="mission-driver" *ngIf="recentMissions[i].chauffeur">
+                  <mat-icon>drive_eta</mat-icon>
+                  {{ recentMissions[i].chauffeur!.prenom }} {{ recentMissions[i].chauffeur!.nom }}
+                </span>
+              </div>
+            </div>
+            <div class="activity-time-section">
+              <span class="activity-time">{{ formatTime(activity.timestamp) }}</span>
+              <span class="activity-date">{{ formatDate(activity.timestamp) }}</span>
+            </div>
+          </div>
+        </div>
+        <ng-template #noActivity>
+          <div class="no-activity">
+            <mat-icon>assignment</mat-icon>
+            <h3>Aucune mission récente</h3>
+            <p>Les missions récentes apparaîtront ici</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

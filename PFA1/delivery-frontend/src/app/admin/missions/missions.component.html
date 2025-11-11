@@ -1,0 +1,170 @@
+<div class="missions-container">
+  <!-- Header Section -->
+  <div class="header-section">
+            <button mat-icon-button (click)="goBack()" class="back-btn" matTooltip="Retour au tableau de bord">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+    <div class="header-content">
+      <h1 class="page-title">
+        <mat-icon class="title-icon">assignment</mat-icon>
+        Gestion des Missions
+      </h1>
+      <p class="page-subtitle">Gérez toutes les missions du système</p>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button class="create-btn" (click)="createNewMission()">
+        <mat-icon>add</mat-icon>
+        Nouvelle Mission
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Chargement des missions...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    <h3>Erreur</h3>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadMissions()">
+      <mat-icon>refresh</mat-icon>
+      Réessayer
+    </button>
+  </div>
+
+  <!-- Missions Table -->
+  <div *ngIf="!loading && !error" class="table-container">
+    <mat-card class="missions-card">
+      <mat-card-header class="card-header">
+        <mat-card-title>
+          <mat-icon>list</mat-icon>
+          Liste des Missions ({{ missions.length }})
+        </mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="table-wrapper">
+          <table mat-table [dataSource]="missions" class="missions-table">
+            
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef class="id-column">ID</th>
+              <td mat-cell *matCellDef="let mission" class="id-cell">
+                <span class="mission-id">#{{ mission.id }}</span>
+              </td>
+            </ng-container>
+
+            <!-- Route Column -->
+            <ng-container matColumnDef="route">
+              <th mat-header-cell *matHeaderCellDef>Itinéraire</th>
+              <td mat-cell *matCellDef="let mission" class="route-cell">
+                <div class="route-info">
+                  <div class="route-point departure">
+                    <mat-icon class="location-icon">location_on</mat-icon>
+                    <span>{{ mission.depart }}</span>
+                  </div>
+                  <mat-icon class="route-arrow">arrow_forward</mat-icon>
+                  <div class="route-point destination">
+                    <mat-icon class="location-icon">flag</mat-icon>
+                    <span>{{ mission.destination }}</span>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Date & Heure</th>
+              <td mat-cell *matCellDef="let mission" class="date-cell">
+                <div class="date-info">
+                  <mat-icon class="date-icon">schedule</mat-icon>
+                  <span>{{ formatDate(mission.dateHeure) }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Type Column -->
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef>Type</th>
+              <td mat-cell *matCellDef="let mission" class="type-cell">
+                <mat-chip class="type-chip" [style.background-color]="getTypeColor(mission.typeMission)">
+                  {{ mission.typeMission }}
+                </mat-chip>
+              </td>
+            </ng-container>
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Statut</th>
+              <td mat-cell *matCellDef="let mission" class="status-cell">
+                <mat-chip class="status-chip" [color]="getStatusColor(mission.etat)">
+                  <mat-icon class="chip-icon">
+                    {{ mission.etat === 'TERMINEE' ? 'check_circle' : 
+                       mission.etat === 'EN_COURS' ? 'hourglass_empty' : 
+                       mission.etat === 'REFUSEE' ? 'cancel' : 'schedule' }}
+                  </mat-icon>
+                  {{ getStatusLabel(mission.etat) }}
+                </mat-chip>
+              </td>
+            </ng-container>
+
+            <!-- Employé Column -->
+            <ng-container matColumnDef="employe">
+              <th mat-header-cell *matHeaderCellDef>Employé</th>
+              <td mat-cell *matCellDef="let mission" class="employe-cell">
+                <div class="assignee-info">
+                  <mat-icon class="person-icon">person</mat-icon>
+                  <span>{{ getEmployeName(mission) }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Chauffeur Column -->
+            <ng-container matColumnDef="chauffeur">
+              <th mat-header-cell *matHeaderCellDef>Chauffeur</th>
+              <td mat-cell *matCellDef="let mission" class="chauffeur-cell">
+                <div class="assignee-info">
+                  <mat-icon class="person-icon">drive_eta</mat-icon>
+                  <span>{{ getChauffeurName(mission) }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="actions-column">Actions</th>
+              <td mat-cell *matCellDef="let mission" class="actions-cell">
+                <div class="action-buttons">
+                  <button mat-icon-button 
+                          class="edit-btn" 
+                          (click)="editMission(mission)"
+                          matTooltip="Modifier">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mission-row"></tr>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="missions.length === 0" class="empty-state">
+          <mat-icon class="empty-icon">assignment</mat-icon>
+          <h3>Aucune mission trouvée</h3>
+          <p>Commencez par créer votre première mission</p>
+          <button mat-raised-button color="primary" (click)="createNewMission()">
+            <mat-icon>add</mat-icon>
+            Créer une Mission
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

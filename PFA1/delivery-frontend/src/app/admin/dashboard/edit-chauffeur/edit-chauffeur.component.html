@@ -1,0 +1,156 @@
+<div class="edit-chauffeur-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <button mat-icon-button (click)="onCancel()" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="header-text">
+          <h1>Modifier Chauffeur</h1>
+          <p>Mettre à jour les informations du chauffeur</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="form-container">
+      <mat-card class="form-card">
+        <mat-card-header>
+          <div class="card-header">
+            <mat-icon class="header-icon">edit</mat-icon>
+            <div>
+              <mat-card-title>Informations du Chauffeur</mat-card-title>
+              <mat-card-subtitle>Modifiez les détails ci-dessous</mat-card-subtitle>
+            </div>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content>
+          <!-- Loading State -->
+          <div *ngIf="isLoadingData" class="loading-container">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>Chargement des données...</p>
+          </div>
+
+          <!-- Form -->
+          <form *ngIf="!isLoadingData" [formGroup]="chauffeurForm" (ngSubmit)="onSubmit()" class="chauffeur-form">
+            <!-- Personal Information Section -->
+            <div class="form-section">
+              <h3 class="section-title">
+                <mat-icon>person</mat-icon>
+                Informations Personnelles
+              </h3>
+              
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Nom</mat-label>
+                  <input matInput formControlName="nom" placeholder="Nom de famille">
+                  <mat-icon matSuffix>person</mat-icon>
+                  <mat-error *ngIf="hasError('nom', 'required')">Le nom est requis</mat-error>
+                  <mat-error *ngIf="hasError('nom', 'minlength')">Le nom doit contenir au moins 2 caractères</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Prénom</mat-label>
+                  <input matInput formControlName="prenom" placeholder="Prénom">
+                  <mat-icon matSuffix>person_outline</mat-icon>
+                  <mat-error *ngIf="hasError('prenom', 'required')">Le prénom est requis</mat-error>
+                  <mat-error *ngIf="hasError('prenom', 'minlength')">Le prénom doit contenir au moins 2 caractères</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="form-section">
+              <h3 class="section-title">
+                <mat-icon>contact_phone</mat-icon>
+                Informations de Contact
+              </h3>
+              
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email" type="email" placeholder="exemple@email.com">
+                  <mat-icon matSuffix>email</mat-icon>
+                  <mat-error *ngIf="hasError('email', 'required')">L'email est requis</mat-error>
+                  <mat-error *ngIf="hasError('email', 'email')">Format d'email invalide</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Téléphone</mat-label>
+                  <input matInput formControlName="telephone" placeholder="0123456789">
+                  <mat-icon matSuffix>phone</mat-icon>
+                  <mat-error *ngIf="hasError('telephone', 'required')">Le téléphone est requis</mat-error>
+                  <mat-error *ngIf="hasError('telephone', 'pattern')">Format de téléphone invalide (10 chiffres)</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Security Section -->
+            <div class="form-section">
+              <h3 class="section-title">
+                <mat-icon>security</mat-icon>
+                Sécurité (Optionnel)
+              </h3>
+              
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="form-field full-width">
+                  <mat-label>Nouveau mot de passe (laisser vide pour ne pas changer)</mat-label>
+                  <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" placeholder="Nouveau mot de passe">
+                  <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+                    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-hint>Laissez vide si vous ne voulez pas changer le mot de passe</mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Employment Information Section -->
+            <div class="form-section">
+              <h3 class="section-title">
+                <mat-icon>work</mat-icon>
+                Informations d'Emploi
+              </h3>
+              
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Date d'embauche</mat-label>
+                  <input matInput [matDatepicker]="picker" formControlName="dateEmbauche" placeholder="Sélectionner une date">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-error *ngIf="hasError('dateEmbauche', 'required')">La date d'embauche est requise</mat-error>
+                </mat-form-field>
+
+                <div class="checkbox-field">
+                  <mat-checkbox formControlName="actif">
+                    <span class="checkbox-label">
+                      <mat-icon>check_circle</mat-icon>
+                      Chauffeur actif
+                    </span>
+                  </mat-checkbox>
+                  <p class="checkbox-hint">Décochez pour désactiver le chauffeur</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </mat-card-content>
+
+        <mat-card-actions *ngIf="!isLoadingData" class="form-actions">
+          <button mat-button (click)="onCancel()" class="cancel-button">
+            <mat-icon>cancel</mat-icon>
+            Annuler
+          </button>
+          <button mat-raised-button color="primary" (click)="onSubmit()" 
+                  [disabled]="!chauffeurForm.valid || isLoading" class="submit-button">
+            <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+            <mat-icon *ngIf="!isLoading">save</mat-icon>
+            {{ isLoading ? 'Modification...' : 'Enregistrer' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
